@@ -6,3 +6,6 @@ The group came together with the goal to improve their knowledge while building 
 Within Hameln-Pyrmont, there is a set of lockers that the county uses to lend objects like laptops or VR headset to interested citizens. This project is supposed to improve the user experience and offer the county a way to individualize the software to better suit their needs.
 
 We're still in the process of setting up the project, so feel free to return in a couple of weeks to see how far we've come!
+
+We have a public discord server. Feel free to join.
+https://discord.gg/GAQMzfDK
