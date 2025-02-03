@@ -1,6 +1,6 @@
 # Open-Locker
 
-![Discord](https://img.shields.io/discord/1330191581273260113?style=flat-square&logo=discord&label=Discord&labelColor=%23FFF)
+[![Discord](https://img.shields.io/discord/1330191581273260113?style=flat-square&logo=discord&label=Discord&labelColor=%23FFF)](https://discord.gg/rZ74RYKN3H)
 
 This is an open source project to create software that locks and unlocks public lockers to store and/or share items sponsored by Smart City Hameln-Pyrmont.
 The group came together with the goal to improve their knowledge while building something that will be of immediate use to the people around them.
