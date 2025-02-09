@@ -45,6 +45,7 @@ class AuthController extends Controller {
 
     /**
      * Login api
+     * @unauthenticated
      */
     public function login( Request $request ): JsonResponse {
         $request->validate( [
