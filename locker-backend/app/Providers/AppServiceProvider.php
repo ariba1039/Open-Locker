@@ -23,5 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         SecurityScheme::http('bearer', 'JWT');
+
+        // Use CarbonImmutable for all date instances. Prevents date mutability.
+        Date::use(CarbonImmutable::class);
     }
 }
