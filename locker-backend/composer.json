@@ -37,6 +37,8 @@
         }
     },
     "scripts": {
+        "cs:fix": "./vendor/bin/pint",
+        "export:api": "php artisan scramble:export",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
