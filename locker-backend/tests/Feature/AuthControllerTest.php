@@ -13,6 +13,10 @@ class AuthControllerTest extends TestCase
 
     public function test_user_can_register()
     {
+        $adminUser = User::factory()->create();
+        $token = $adminUser->createToken('auth_token')->plainTextToken;
+
+
         $userData = [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
@@ -20,7 +24,9 @@ class AuthControllerTest extends TestCase
             'password_confirmation' => 'password123',
         ];
 
-        $response = $this->postJson('/api/register', $userData);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->postJson('/api/register', $userData);
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -37,6 +43,8 @@ class AuthControllerTest extends TestCase
     public function test_user_cannot_register_with_existing_email()
     {
         $existingUser = User::factory()->create();
+        $token = $existingUser->createToken('auth_token')->plainTextToken;
+
 
         $userData = [
             'name' => $this->faker->name,
@@ -45,7 +53,9 @@ class AuthControllerTest extends TestCase
             'password_confirmation' => 'password123',
         ];
 
-        $response = $this->postJson('/api/register', $userData);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->postJson('/api/register', $userData);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
@@ -130,7 +140,13 @@ class AuthControllerTest extends TestCase
 
     public function test_registration_validation_rules()
     {
-        $response = $this->postJson('/api/register', [
+        $adminUser = User::factory()->create();
+        $token = $adminUser->createToken('auth_token')->plainTextToken;
+
+
+        $response =  $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->postJson('/api/register', [
             'name' => '',
             'email' => 'not-an-email',
             'password' => '123', // zu kurz
