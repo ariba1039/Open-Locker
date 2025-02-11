@@ -141,9 +141,6 @@ class AuthControllerTest extends TestCase
         $adminUser = User::factory()->create();
         $token = $adminUser->createToken('auth_token')->plainTextToken;
 
-
-
-
         $response = $this->withHeaders([
             'Authorization' => 'Bearer '.$token,
         ])->postJson('/api/register', [
