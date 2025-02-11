@@ -21,7 +21,7 @@
                 "action": "php artisan test --testsuite=Unit"
             },
             {
-                "action": "./vendor/bin/pint"
+                "action": "composer format:test"
             }
         ]
     },

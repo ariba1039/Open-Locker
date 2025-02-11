@@ -10,6 +10,9 @@ Route::controller(AuthController::class)->group(function () {
 
 
 
+
+
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
