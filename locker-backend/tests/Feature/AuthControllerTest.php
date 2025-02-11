@@ -23,10 +23,10 @@ class AuthControllerTest extends TestCase
         $response = $this->postJson('/api/register', $userData);
 
         $response->assertStatus(200)
-                 ->assertJsonStructure([
-                     'token',
-                     'name',
-                 ]);
+            ->assertJsonStructure([
+                'token',
+                'name',
+            ]);
 
         $this->assertDatabaseHas('users', [
             'email' => $userData['email'],
@@ -48,7 +48,7 @@ class AuthControllerTest extends TestCase
         $response = $this->postJson('/api/register', $userData);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['email']);
+            ->assertJsonValidationErrors(['email']);
     }
 
     public function test_user_can_login()
@@ -65,10 +65,10 @@ class AuthControllerTest extends TestCase
         $response = $this->postJson('/api/login', $loginData);
 
         $response->assertStatus(200)
-                 ->assertJsonStructure([
-                     'token',
-                     'name',
-                 ]);
+            ->assertJsonStructure([
+                'token',
+                'name',
+            ]);
     }
 
     public function test_user_cannot_login_with_invalid_credentials()
@@ -84,7 +84,6 @@ class AuthControllerTest extends TestCase
 
         $response = $this->postJson('/api/login', $loginData);
 
-
         $response->assertStatus(422);
     }
 
@@ -94,13 +93,13 @@ class AuthControllerTest extends TestCase
         $token = $user->createToken('auth_token')->plainTextToken;
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
         ])->postJson('/api/logout');
 
         $response->assertStatus(200)
-                 ->assertJson([
-                     'message' => 'Logged out successfully'
-                 ]);
+            ->assertJson([
+                'message' => 'Logged out successfully',
+            ]);
 
         $this->assertDatabaseCount('personal_access_tokens', 0);
     }
@@ -111,15 +110,15 @@ class AuthControllerTest extends TestCase
         $token = $user->createToken('auth_token')->plainTextToken;
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
         ])->getJson('/api/user');
 
         $response->assertStatus(200)
-                 ->assertJson([
-                     'id' => $user->id,
-                     'name' => $user->name,
-                     'email' => $user->email,
-                 ]);
+            ->assertJson([
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ]);
     }
 
     public function test_unauthenticated_user_cannot_access_protected_routes()
@@ -139,7 +138,7 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['name', 'email', 'password']);
+            ->assertJsonValidationErrors(['name', 'email', 'password']);
     }
 
     public function test_login_validation_rules()
@@ -150,6 +149,6 @@ class AuthControllerTest extends TestCase
         ]);
 
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['email', 'password']);
+            ->assertJsonValidationErrors(['email', 'password']);
     }
 }
