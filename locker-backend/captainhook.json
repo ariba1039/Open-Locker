@@ -1,11 +1,52 @@
 {
+    "commit-msg": {
+        "enabled": true,
+        "actions": []
+    },
+    "pre-push": {
+        "enabled": false,
+        "actions": [
+            {
+                "action": "php artisan test"
+            }
+        ]
+    },
     "pre-commit": {
         "enabled": true,
         "actions": [
             {
-                "action": "composer format",
-                "options": []
+                "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting"
+            },
+            {
+                "action": "php artisan test --testsuite=Unit"
+            },
+            {
+                "action": "./vendor/bin/pint"
             }
         ]
+    },
+    "prepare-commit-msg": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-commit": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-merge": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-checkout": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-rewrite": {
+        "enabled": false,
+        "actions": []
+    },
+    "post-change": {
+        "enabled": false,
+        "actions": []
     }
 }
