@@ -8,11 +8,6 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
 });
 
-
-
-
-
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);

@@ -4,7 +4,7 @@
         "actions": []
     },
     "pre-push": {
-        "enabled": false,
+        "enabled": true,
         "actions": [
             {
                 "action": "php artisan test"
@@ -14,9 +14,6 @@
     "pre-commit": {
         "enabled": true,
         "actions": [
-            {
-                "action": "\\CaptainHook\\App\\Hook\\PHP\\Action\\Linting"
-            },
             {
                 "action": "php artisan test --testsuite=Unit"
             },

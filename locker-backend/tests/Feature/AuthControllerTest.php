@@ -16,7 +16,6 @@ class AuthControllerTest extends TestCase
         $adminUser = User::factory()->create();
         $token = $adminUser->createToken('auth_token')->plainTextToken;
 
-
         $userData = [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
@@ -25,7 +24,7 @@ class AuthControllerTest extends TestCase
         ];
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
         ])->postJson('/api/register', $userData);
 
         $response->assertStatus(200)
@@ -45,7 +44,6 @@ class AuthControllerTest extends TestCase
         $existingUser = User::factory()->create();
         $token = $existingUser->createToken('auth_token')->plainTextToken;
 
-
         $userData = [
             'name' => $this->faker->name,
             'email' => $existingUser->email, // Verwende bereits existierende E-Mail
@@ -54,7 +52,7 @@ class AuthControllerTest extends TestCase
         ];
 
         $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+            'Authorization' => 'Bearer '.$token,
         ])->postJson('/api/register', $userData);
 
         $response->assertStatus(422)
@@ -144,8 +142,10 @@ class AuthControllerTest extends TestCase
         $token = $adminUser->createToken('auth_token')->plainTextToken;
 
 
-        $response =  $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
+
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
         ])->postJson('/api/register', [
             'name' => '',
             'email' => 'not-an-email',
