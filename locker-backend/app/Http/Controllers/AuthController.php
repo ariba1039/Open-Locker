@@ -15,7 +15,6 @@ class AuthController extends Controller {
     /**
      * Register api
      *
-     * @return RegisterResponse
      * @throws \Exception
      */
     public function register( Request $request ): JsonResponse {
@@ -63,6 +62,9 @@ class AuthController extends Controller {
 
     }
 
+    /**
+     * Logout api
+     */
     public function logout( Request $request ): JsonResponse {
         $request->user()->currentAccessToken()->delete();
 
@@ -71,6 +73,9 @@ class AuthController extends Controller {
         ] );
     }
 
+    /**
+     * Get current User
+     */
     public function user( Request $request ): JsonResponse {
         return response()->json( $request->user() );
     }
