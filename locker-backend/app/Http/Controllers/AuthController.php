@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class AuthController extends Controller
 {
     /**
-     * Register api
+     * Register
      *
      * @throws \Exception
      */
@@ -43,7 +43,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Login api
+     * Login
      *
      * @unauthenticated
      */
@@ -65,7 +65,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Logout api
+     * Logout
      */
     public function logout(Request $request): JsonResponse
     {
