@@ -3,12 +3,14 @@
 namespace App\Http\Resources;
 
 use App\Models\User;
+use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @property User $resource
  */
+#[SchemaName('User')]
 class UserResource extends JsonResource
 {
     /**
