@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Item extends Model
 {
     use HasFactory;
+
     public function borrower(): HasOne
     {
-        return $this->hasOne(User::class,"id","borrower_id");
+        return $this->hasOne(User::class, 'id', 'borrower_id');
     }
-
 }

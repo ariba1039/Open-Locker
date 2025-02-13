@@ -11,20 +11,22 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property Item $resource
  */
 #[SchemaName('Item')]
-class ItemResource extends JsonResource {
+class ItemResource extends JsonResource
+{
     /**
      * Transform the resource into an array.
      *
      * @return array<string, mixed>
      */
-    public function toArray( Request $request ): array {
+    public function toArray(Request $request): array
+    {
         return [
-            "id"          => $this->resource->id,
-            "name"        => $this->resource->name,
-            "description" => $this->resource->description,
-            "image_path"  => $this->resource->image_path,
-            "created_at"  => $this->resource->created_at,
-            "updated_at"  => $this->resource->updated_at
+            'id' => $this->resource->id,
+            'name' => $this->resource->name,
+            'description' => $this->resource->description,
+            'image_path' => $this->resource->image_path,
+            'created_at' => $this->resource->created_at,
+            'updated_at' => $this->resource->updated_at,
         ];
     }
 }

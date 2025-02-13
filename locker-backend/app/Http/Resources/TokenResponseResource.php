@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources;
 
-
-
 use App\Models\User;
 use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Request;
@@ -23,8 +21,8 @@ class TokenResponseResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "token" => $this->resource->createToken( 'auth_token' )->plainTextToken,
-            "name" => $this->resource->name
+            'token' => $this->resource->createToken('auth_token')->plainTextToken,
+            'name' => $this->resource->name,
         ];
     }
 }

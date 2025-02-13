@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
 use App\Http\Resources\TokenResponseResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,32 +12,34 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AuthController extends Controller {
+class AuthController extends Controller
+{
     /**
      * Register
      *
      * @throws \Exception
      */
-    public function register( Request $request ): TokenResponseResource {
-        $request->validate( [
-            'name'     => [ 'required', 'string', 'max:255' ],
-            'email'    => [
+    public function register(Request $request): TokenResponseResource
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
                 'required',
                 'string',
                 'email',
                 'max:255',
-                Rule::unique( User::class ),
+                Rule::unique(User::class),
             ],
-            'password' => [ 'required', 'string', 'min:8', 'confirmed' ],
-        ] );
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
 
-        $user = User::create( [
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make( $request->password ),
-        ] );
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-        $token = $user->createToken( 'auth_token' )->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         return new TokenResponseResource($user);
     }
@@ -47,14 +49,15 @@ class AuthController extends Controller {
      *
      * @unauthenticated
      */
-    public function login( Request $request ): TokenResponseResource {
-        $request->validate( [
-            'email'    => 'required|email',
+    public function login(Request $request): TokenResponseResource
+    {
+        $request->validate([
+            'email' => 'required|email',
             'password' => 'required',
-        ] );
+        ]);
 
-        if ( ! Auth::attempt( $request->only( 'email', 'password' ) ) ) {
-            throw ValidationException::withMessages( [ 'email' => [ 'The provided credentials are incorrect.' ] ] );
+        if (! Auth::attempt($request->only('email', 'password'))) {
+            throw ValidationException::withMessages(['email' => ['The provided credentials are incorrect.']]);
         }
 
         return new TokenResponseResource($request->user());
@@ -64,21 +67,23 @@ class AuthController extends Controller {
     /**
      * Logout
      */
-    public function logout( Request $request ): JsonResponse {
+    public function logout(Request $request): JsonResponse
+    {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json( [
+        return response()->json([
             'message' => 'Logged out successfully',
-        ] );
+        ]);
     }
 
     /**
      * Get current User
      */
-    public function user( Request $request ): UserResource {
+    public function user(Request $request): UserResource
+    {
 
         $user = $request->user();
 
-        return new UserResource( $user );
+        return new UserResource($user);
     }
 }
