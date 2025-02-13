@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
+use App\Http\Resources\TokenResponseResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,7 @@ class AuthController extends Controller {
      *
      * @throws \Exception
      */
-    public function register( Request $request ): JsonResponse {
+    public function register( Request $request ): TokenResponseResource {
         $request->validate( [
             'name'     => [ 'required', 'string', 'max:255' ],
             'email'    => [
@@ -38,7 +39,7 @@ class AuthController extends Controller {
 
         $token = $user->createToken( 'auth_token' )->plainTextToken;
 
-        return response()->json( [ 'token' => $token, 'name' => $user->name ] );
+        return new TokenResponseResource($user);
     }
 
     /**
@@ -46,7 +47,7 @@ class AuthController extends Controller {
      *
      * @unauthenticated
      */
-    public function login( Request $request ): JsonResponse {
+    public function login( Request $request ): TokenResponseResource {
         $request->validate( [
             'email'    => 'required|email',
             'password' => 'required',
@@ -56,9 +57,7 @@ class AuthController extends Controller {
             throw ValidationException::withMessages( [ 'email' => [ 'The provided credentials are incorrect.' ] ] );
         }
 
-        $token = $request->user()->createToken( 'auth_token' )->plainTextToken;
-
-        return response()->json( [ 'token' => $token, 'name' => $request->user()->name ] );
+        return new TokenResponseResource($request->user());
 
     }
 
