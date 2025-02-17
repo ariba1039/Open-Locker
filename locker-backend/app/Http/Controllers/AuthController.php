@@ -50,7 +50,7 @@ class AuthController extends Controller
     {
         if ($request->user()->hasVerifiedEmail()) {
             return response()->json([
-                'message' => 'Email already verified',
+                'message' => __('Email already verified'),
             ]);
         }
 
@@ -59,7 +59,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            'message' => 'Email verified',
+            'message' => __('Email verified'),
         ]);
     }
 
@@ -76,7 +76,7 @@ class AuthController extends Controller
         ]);
 
         if (! Auth::attempt($request->only('email', 'password'))) {
-            throw ValidationException::withMessages(['email' => ['The provided credentials are incorrect.']]);
+            throw ValidationException::withMessages(['email' => [__('The provided credentials are incorrect.')]]);
         }
 
         return new TokenResponseResource($request->user());
@@ -91,7 +91,7 @@ class AuthController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logged out successfully',
+            'message' => __('Logged out successfully'),
         ]);
     }
 
@@ -114,14 +114,14 @@ class AuthController extends Controller
 
         if ($request->user()->hasVerifiedEmail()) {
             return response()->json([
-                'message' => 'Email already verified',
+                'message' => __('Email already verified'),
             ]);
         }
 
         $request->user()->sendEmailVerificationNotification();
 
         return response()->json([
-            'message' => 'Email verification link sent',
+            'message' => __('Email verification link sent'),
         ]);
     }
 }
