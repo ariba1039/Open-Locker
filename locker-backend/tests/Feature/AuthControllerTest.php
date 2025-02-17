@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
@@ -164,5 +165,44 @@ class AuthControllerTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['email', 'password']);
+    }
+
+    public function test_user_can_verify_email()
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'auth.verify-email',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)]
+        );
+
+        $response = $this->actingAs($user)->getJson($verificationUrl);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Email verified',
+            ]);
+
+        $this->assertTrue($user->fresh()->hasVerifiedEmail());
+    }
+
+    public function test_user_cannot_verify_email_with_invalid_signature()
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+
+        $invalidVerificationUrl = URL::temporarySignedRoute(
+            'auth.verify-email',
+            now()->subMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)]
+        );
+
+        $response = $this->actingAs($user)->getJson($invalidVerificationUrl);
+
+        $response->assertStatus(403);
     }
 }
