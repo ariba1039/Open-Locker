@@ -1,40 +1,40 @@
 #!/bin/sh
-echo "Starte Hook-Manager..."
+echo "Starting Hook Manager..."
 
-# Herausfinden, welche Dateien geändert wurden
+# Find out which files have changed
 CHANGED_FILES=$(git diff --cached --name-only)
 
-# Projekte im Monorepo definieren
+# Define projects in the monorepo
 PROJECTS="locker-backend"
 
-# Fehlerstatus-Variable (falls ein Hook fehlschlägt)
+# Error status variable (in case a hook fails)
 HOOK_FAILED=0
 
-# Bestimme das Root-Verzeichnis des Repos
+# Determine the root directory of the repo
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
-# Durch jedes Projekt iterieren und prüfen, ob es einen eigenen Hook hat
+# Iterate through each project and check if it has its own hook
 for PROJECT in $PROJECTS; do
   if echo "$CHANGED_FILES" | grep -q "^$PROJECT/"; then
     HOOK_PATH="$REPO_ROOT/$PROJECT/.githooks/pre-commit"
 
     if [ -f "$HOOK_PATH" ]; then
-      echo "🚀 Führe Hook für $PROJECT aus..."
-      chmod +x "$HOOK_PATH"  # Falls nötig
+      echo "🚀 Running hook for $PROJECT..."
+      chmod +x "$HOOK_PATH"  # If necessary
 
-      # Hook ausführen, Fehler abfangen und Ausgabe mit Projekt-Tag versehen
+      # Execute hook, catch errors, and tag output with project name
       (cd "$REPO_ROOT/$PROJECT" && "$HOOK_PATH") || HOOK_FAILED=1
     else
-      echo "✅ Kein Hook für $PROJECT gefunden – übersprungen."
+      echo "✅ No hook found for $PROJECT – skipped."
     fi
   fi
 done
 
-# Falls ein Hook fehlschlägt, Commit abbrechen
+# If a hook fails, abort the commit
 if [ $HOOK_FAILED -ne 0 ]; then
-  echo "❌ Mindestens ein Hook ist fehlgeschlagen. Commit abgebrochen."
+  echo "❌ At least one hook failed. Commit aborted."
   exit 1
 fi
 
-echo "✅ Alle Hooks erfolgreich ausgeführt."
+echo "✅ All hooks executed successfully."
 exit 0

@@ -2,14 +2,12 @@
 
 # run only if php file changed
 if  git diff --cached --name-only | grep -q '\.php$'; then
-  echo "Führe Laravel Pint aus..."
-  composer format:check
+  echo "Running Laravel Pint..."
+  ./vendor/bin/pint --test
 
-  # Falls Pint Fehler findet, beende das Skript mit einem Fehlercode
+  # If Pint finds errors, exit the script with an error code
   if [ $? -ne 0 ]; then
-    echo "❌ Laravel Pint hat Style-Fehler gefunden. Commit wird abgebrochen. Nutze 'composer format' um die Fehler zu beheben."
+    echo "❌ Laravel Pint found style errors. Commit aborted. Use './vendor/bin/pint' to fix the errors."
     exit 1
   fi
 fi
-
-
