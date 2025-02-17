@@ -3,8 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
@@ -204,5 +206,41 @@ class AuthControllerTest extends TestCase
         $response = $this->actingAs($user)->getJson($invalidVerificationUrl);
 
         $response->assertStatus(403);
+    }
+
+    public function test_send_verification_email()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+
+        $response = $this->actingAs($user)->postJson(Route('auth.send-verification-email'));
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Email verification link sent',
+            ]);
+
+        Notification::assertSentTo(
+            [$user], VerifyEmail::class
+        );
+    }
+
+    public function test_send_verification_email_already_verified()
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        $this->actingAs($user);
+
+        $response = $this->postJson('/api/email/verification-notification');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Email already verified',
+            ]);
     }
 }
