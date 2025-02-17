@@ -62,6 +62,29 @@ class AuthControllerTest extends TestCase
             ->assertJsonValidationErrors(['email']);
     }
 
+    public function test_verification_email_is_sent_on_registration()
+    {
+        Notification::fake();
+
+        $adminUser = User::factory()->create();
+
+        $userData = [
+            'name' => $this->faker->name,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $response = $this->actingAs($adminUser)->postJson('/api/register', $userData);
+
+        $response->assertStatus(201);
+
+        Notification::assertSentTo(
+            [User::where('email', $userData['email'])->first()],
+            VerifyEmail::class
+        );
+    }
+
     public function test_user_can_login()
     {
         $user = User::factory()->create([
@@ -176,7 +199,7 @@ class AuthControllerTest extends TestCase
         ]);
 
         $verificationUrl = URL::temporarySignedRoute(
-            'auth.verify-email',
+            'verification.verify',
             now()->addMinutes(60),
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
@@ -198,7 +221,7 @@ class AuthControllerTest extends TestCase
         ]);
 
         $invalidVerificationUrl = URL::temporarySignedRoute(
-            'auth.verify-email',
+            'verification.verify',
             now()->subMinutes(60),
             ['id' => $user->id, 'hash' => sha1($user->email)]
         );
@@ -216,7 +239,7 @@ class AuthControllerTest extends TestCase
             'email_verified_at' => null,
         ]);
 
-        $response = $this->actingAs($user)->postJson(Route('auth.send-verification-email'));
+        $response = $this->actingAs($user)->postJson(Route('verification.send'));
 
         $response->assertStatus(200)
             ->assertJson([

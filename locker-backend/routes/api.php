@@ -16,10 +16,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', 'logout');
         Route::get('user', 'user');
         Route::get('verify-email/{id}/{hash}', 'verifyEmail')
-            ->middleware(['signed', 'throttle:6,1'])->name('auth.verify-email');
+            ->middleware(['signed', 'throttle:6,1'])->name('verification.verify');
         Route::post('email/verification-notification', 'sendVerificationEmail')
             ->middleware('throttle:6,1')
-            ->name('auth.send-verification-email');
+            ->name('verification.send');
 
     });
     Route::controller(ItemController::class)->prefix('/items')->group(function () {
