@@ -3,7 +3,7 @@
 # run only if php file changed
 if  git diff --cached --name-only | grep -q '\.php$'; then
   echo "Running Laravel Pint..."
-  ./vendor/bin/pint --test
+  ./vendor/bin/pint --test --quiet
 
   # If Pint finds errors, exit the script with an error code
   if [ $? -ne 0 ]; then

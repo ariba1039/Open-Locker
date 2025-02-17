@@ -22,8 +22,20 @@ for PROJECT in $PROJECTS; do
       echo "🚀 Running hook for $PROJECT..."
       chmod +x "$HOOK_PATH"  # If necessary
 
-      # Execute hook, catch errors, and tag output with project name
-      (cd "$REPO_ROOT/$PROJECT" && "$HOOK_PATH") || HOOK_FAILED=1
+      # Execute hook and prefix each line of output with the project name
+      # We use a temporary file to capture the output
+      TEMP_OUTPUT=$(mktemp)
+
+      # Execute the hook and capture both stdout and stderr
+      (cd "$REPO_ROOT/$PROJECT" && "$HOOK_PATH") > "$TEMP_OUTPUT" 2>&1 || HOOK_FAILED=1
+
+      # Prefix each line with the project name and output it
+      while IFS= read -r line; do
+        echo "[$PROJECT] $line"
+      done < "$TEMP_OUTPUT"
+
+      # Clean up temporary file
+      rm "$TEMP_OUTPUT"
     else
       echo "✅ No hook found for $PROJECT – skipped."
     fi
