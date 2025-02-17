@@ -1,5 +1,24 @@
 #!/bin/sh
-echo "Starting Hook Manager..."
+
+# Function to output messages with color
+green() {
+    printf '\033[0;32m%s\033[0m\n' "$1" >&1
+}
+
+blue() {
+    printf '\033[0;34m%s\033[0m\n' "$1" >&1
+}
+
+red() {
+    printf '\033[1;31m%s\033[0m\n' "$1" >&2
+}
+
+white() {
+    printf '\033[1;37m%s\033[0m\n' "$1" >&1
+}
+
+# Ensure default output goes to stdout
+white "Starting Hook Manager..."
 
 # Find out which files have changed
 CHANGED_FILES=$(git diff --cached --name-only)
@@ -19,34 +38,41 @@ for PROJECT in $PROJECTS; do
     HOOK_PATH="$REPO_ROOT/$PROJECT/.githooks/pre-commit"
 
     if [ -f "$HOOK_PATH" ]; then
-      echo "🚀 Running hook for $PROJECT..."
+      white "🚀 Running hook for $PROJECT..."
       chmod +x "$HOOK_PATH"  # If necessary
 
       # Execute hook and prefix each line of output with the project name
-      # We use a temporary file to capture the output
       TEMP_OUTPUT=$(mktemp)
+      TEMP_ERROR=$(mktemp)
 
-      # Execute the hook and capture both stdout and stderr
-      (cd "$REPO_ROOT/$PROJECT" && "$HOOK_PATH") > "$TEMP_OUTPUT" 2>&1 || HOOK_FAILED=1
+      # Execute the hook and separate stdout and stderr
+      (cd "$REPO_ROOT/$PROJECT" && "$HOOK_PATH") > "$TEMP_OUTPUT" 2> "$TEMP_ERROR" || HOOK_FAILED=1
 
-      # Prefix each line with the project name and output it
+      # Prefix and output stdout lines in blue
       while IFS= read -r line; do
-        echo "[$PROJECT] $line"
+        white "[$PROJECT] $line"
       done < "$TEMP_OUTPUT"
 
-      # Clean up temporary file
-      rm "$TEMP_OUTPUT"
+      # Prefix and output stderr lines in red (only if there are errors)
+      if [ -s "$TEMP_ERROR" ]; then
+        while IFS= read -r line; do
+          red "[$PROJECT] $line"
+        done < "$TEMP_ERROR"
+      fi
+
+      # Clean up temporary files
+      rm "$TEMP_OUTPUT" "$TEMP_ERROR"
     else
-      echo "✅ No hook found for $PROJECT – skipped."
+      green "✅ No hook found for $PROJECT – skipped."
     fi
   fi
 done
 
 # If a hook fails, abort the commit
 if [ $HOOK_FAILED -ne 0 ]; then
-  echo "❌ At least one hook failed. Commit aborted."
+  red "❌ At least one hook failed. Commit aborted."
   exit 1
 fi
 
-echo "✅ All hooks executed successfully."
+green "✅ All hooks executed successfully."
 exit 0
