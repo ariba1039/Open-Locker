@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -122,6 +123,28 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => __('Email verification link sent'),
+        ]);
+    }
+
+    /**
+     * Send Password E-Mail
+     */
+    public function sendPasswortEmail(Request $request): JsonResponse
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status == Password::RESET_LINK_SENT) {
+            return response()->json([
+                'message' => __('Password reset link sent'),
+            ]);
+        }
+
+        throw ValidationException::withMessages([
+            'email' => [trans($status)],
         ]);
     }
 }

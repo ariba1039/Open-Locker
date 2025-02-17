@@ -266,4 +266,34 @@ class AuthControllerTest extends TestCase
                 'message' => 'Email already verified',
             ]);
     }
+
+    public function test_user_can_request_password_reset_link()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create();
+
+        $response = $this->postJson(Route('password.email'), [
+            'email' => $user->email,
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Password reset link sent',
+            ]);
+
+        Notification::assertSentTo(
+            [$user], \Illuminate\Auth\Notifications\ResetPassword::class
+        );
+    }
+
+    public function test_user_cannot_request_password_reset_link_with_invalid_email()
+    {
+        $response = $this->postJson(Route('password.email'), [
+            'email' => 'invalid-email@example.com',
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['email']);
+    }
 }
