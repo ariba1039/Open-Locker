@@ -3,9 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Services\FakeLockerService;
 use Database\Factories\ItemFactory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +23,10 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('string'),
         ]);
 
-        ItemFactory::new()->count(10)->create([]);
+        $locker_list = (new FakeLockerService)->getLockerList();
+
+        ItemFactory::new()->count(count($locker_list))->create([
+            'locker_id' => Arr::random($locker_list)->id,
+        ]);
     }
 }

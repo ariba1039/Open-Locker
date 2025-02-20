@@ -20,7 +20,7 @@ class ItemFactory extends Factory
             'name' => ucfirst($this->faker->unique()->word()),
             'description' => fake()->text(),
             'image_path' => fake()->imageUrl(),
-
+            'locker_id' => fake()->randomLetter().'-'.fake()->numberBetween(1, 9),
         ];
     }
 }

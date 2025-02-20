@@ -25,6 +25,9 @@ class ItemResource extends JsonResource
             'name' => $this->resource->name,
             'description' => $this->resource->description,
             'image_path' => $this->resource->image_path,
+            'locker_id' => $this->resource->locker_id,
+            /** @var bool */
+            'borrowed' => (bool) $this->resource->borrower_id,
             'created_at' => $this->resource->created_at,
             'updated_at' => $this->resource->updated_at,
         ];

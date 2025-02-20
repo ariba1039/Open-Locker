@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('image_path');
+            $table->string('locker_id');
             $table->foreignId('borrower_id')->nullable()->constrained('users');
         });
     }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Item;
 use App\Models\User;
+use App\Services\LockerServiceInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -11,12 +12,19 @@ class ItemControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->lockerService = $this->createMock(LockerServiceInterface::class);
+        $this->app->instance(LockerServiceInterface::class, $this->lockerService);
+    }
+
     /**
      * Test the index method returns a successful response.
      */
     public function test_index_returns_successful_response(): void
     {
-        Item::factory()->count(3)->create();
+        Item::factory()->count(3);
 
         $response = $this->actingAs(User::factory()->create())->getJson('/api/items');
 
@@ -34,11 +42,90 @@ class ItemControllerTest extends TestCase
 
         $response->assertJsonStructure([
 
-            ['id',
+            [
+                'id',
                 'name',
                 'description',
-                'image_path', ],
+                'image_path',
+                'locker_id',
+            ],
 
         ]);
+    }
+
+    public function test_user_can_borrow_item()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create(['borrower_id' => null]);
+
+        $this->lockerService->expects($this->once())
+            ->method('openLocker')
+            ->with($item->locker_id)
+            ->willReturn(true);
+
+        $response = $this->actingAs($user)->postJson(route('items.borrow', $item->id));
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => true,
+                'message' => __('Item borrowed successfully'),
+            ]);
+
+        $this->assertDatabaseHas('items', [
+            'id' => $item->id,
+            'borrower_id' => $user->id,
+        ]);
+    }
+
+    public function test_user_can_return_item()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create(['borrower_id' => $user->id]);
+
+        $this->lockerService->expects($this->once())
+            ->method('openLocker')
+            ->with($item->locker_id)
+            ->willReturn(true);
+
+        $response = $this->actingAs($user)->postJson(route('items.return', $item->id));
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => true,
+                'message' => __('Item returned successfully'),
+            ]);
+
+        $this->assertDatabaseHas('items', [
+            'id' => $item->id,
+            'borrower_id' => null,
+        ]);
+    }
+
+    public function test_user_cannot_borrow_item_already_borrowed()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create(['borrower_id' => $user->id]);
+
+        $response = $this->actingAs($user)->postJson(route('items.borrow', $item->id));
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => false,
+                'message' => __('Item is already borrowed'),
+            ]);
+    }
+
+    public function test_user_cannot_return_item_not_borrowed()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create(['borrower_id' => null]);
+
+        $response = $this->actingAs($user)->postJson(route('items.return', $item->id));
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => false,
+                'message' => __('Item is not borrowed'),
+            ]);
     }
 }

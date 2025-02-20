@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\FakeLockerService;
+use App\Services\LockerServiceInterface;
 use Carbon\CarbonImmutable;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
@@ -17,7 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(LockerServiceInterface::class, function ($app) {
+            return new FakeLockerService; // or new RealLockerService() in the Future
+        });
     }
 
     /**
