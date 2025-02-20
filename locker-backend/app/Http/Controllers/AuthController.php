@@ -150,6 +150,9 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Reset Password with Token
+     */
     public function storeNewPassword(Request $request): JsonResponse
     {
 
