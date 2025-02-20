@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -295,5 +296,42 @@ class AuthControllerTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
+    }
+
+    public function test_user_can_reset_password()
+    {
+        Notification::fake();
+
+        $user = User::factory()->create();
+
+        $this->post(Route('password.email'), ['email' => $user->email]);
+
+        Notification::assertSentTo($user, ResetPassword::class, function ($notification) use ($user) {
+            $response = $this->post('/reset-password', [
+                'token' => $notification->token,
+                'email' => $user->email,
+                'password' => 'password',
+                'password_confirmation' => 'password',
+            ]);
+
+            $response
+                ->assertSessionHasNoErrors();
+
+            return true;
+        });
+    }
+
+    public function test_user_cannot_reset_password_with_invalid_token()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->postJson('/api/password/reset', [
+            'token' => 'invalid-token',
+            'email' => $user->email,
+            'password' => 'newpassword',
+            'password_confirmation' => 'newpassword',
+        ]);
+
+        $response->assertStatus(404);
     }
 }
