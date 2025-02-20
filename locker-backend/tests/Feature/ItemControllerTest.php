@@ -128,4 +128,28 @@ class ItemControllerTest extends TestCase
                 'message' => __('Item is not borrowed'),
             ]);
     }
+
+    public function test_get_borrowed_items_from_user_returns_correct_items()
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+        $borrowedItems = Item::factory()->count(3)->create(['borrower_id' => $user->id]);
+        $borrowedByOtherItems = Item::factory()->count(3)->create(['borrower_id' => $otherUser->id]);
+        $otherItems = Item::factory()->count(2)->create(['borrower_id' => null]);
+
+        $response = $this->actingAs($user)->getJson(route('items.borrowed'));
+
+        $response->assertStatus(200)
+            ->assertJsonCount(3)
+            ->assertJsonStructure([
+                '*' => ['id', 'name', 'description', 'image_path', 'locker_id', 'borrowed'],
+            ]);
+
+        foreach ($borrowedItems as $item) {
+            $response->assertJsonFragment([
+                'id' => $item->id,
+                'borrowed' => true,
+            ]);
+        }
+    }
 }

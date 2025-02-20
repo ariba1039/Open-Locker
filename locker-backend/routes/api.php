@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::controller(ItemController::class)->prefix('/items')->group(function () {
         Route::get('', 'index')->name('items.index');
+        Route::get('borrowed', 'getBorrowedItemsFromUser')->name('items.borrowed');
 
         Route::post('{item}/borrow', 'borrowItem')->name('items.borrow');
         Route::post('{item}/return', 'returnItem')->name('items.return');

@@ -23,6 +23,16 @@ class ItemController extends Controller
     }
 
     /**
+     * Get all Items from User.
+     *
+     * @response AnonymousResourceCollection<ItemResource>
+     */
+    public function getBorrowedItemsFromUser(Request $request): AnonymousResourceCollection
+    {
+        return ItemResource::collection(Item::where('borrower_id', $request->user()->id)->get());
+    }
+
+    /**
      * Borrow a Item
      */
     public function borrowItem(Item $item, Request $request, LockerServiceInterface $lockerService): JsonResponse
