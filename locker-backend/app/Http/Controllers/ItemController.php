@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
+use App\Models\ItemLoan;
 use App\Services\LockerServiceInterface;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,7 +30,11 @@ class ItemController extends Controller
      */
     public function getBorrowedItemsFromUser(Request $request): AnonymousResourceCollection
     {
-        return ItemResource::collection(Item::where('borrower_id', $request->user()->id)->get());
+        $userItemIds = ItemLoan::where('user_id', $request->user()->id)
+            ->whereNull('returned_at')
+            ->pluck('item_id');
+
+        return ItemResource::collection(Item::whereIn('id', $userItemIds)->get());
     }
 
     /**
@@ -37,18 +42,21 @@ class ItemController extends Controller
      */
     public function borrowItem(Item $item, Request $request, LockerServiceInterface $lockerService): JsonResponse
     {
-
-        if ($item->borrower_id !== null) {
+        // Prüfe ob das Item bereits ausgeliehen ist
+        if ($item->activeLoan()->exists()) {
             return response()->json([
                 'status' => false,
                 'message' => __('Item is already borrowed'),
-
             ]);
         }
 
         DB::transaction(function () use ($lockerService, $item, $request) {
-            $item->borrower_id = $request->user()->id;
-            $item->save();
+            // Erstelle einen neuen Ausleih-Eintrag
+            ItemLoan::create([
+                'item_id' => $item->id,
+                'user_id' => $request->user()->id,
+                'borrowed_at' => now(),
+            ]);
 
             $lockerService->openLocker($item->locker_id);
         });
@@ -57,7 +65,6 @@ class ItemController extends Controller
             'status' => true,
             'message' => __('Item borrowed successfully'),
         ]);
-
     }
 
     /**
@@ -65,17 +72,19 @@ class ItemController extends Controller
      */
     public function returnItem(Item $item, Request $request, LockerServiceInterface $lockerService): JsonResponse
     {
+        $activeLoan = $item->activeLoan;
 
-        if ($item->borrower_id === null) {
+        if (! $activeLoan) {
             return response()->json([
                 'status' => false,
                 'message' => __('Item is not borrowed'),
             ]);
         }
 
-        DB::transaction(function () use ($lockerService, $item) {
-            $item->borrower_id = null;
-            $item->save();
+        DB::transaction(function () use ($lockerService, $item, $activeLoan) {
+            $activeLoan->update([
+                'returned_at' => now(),
+            ]);
 
             $lockerService->openLocker($item->locker_id);
         });
@@ -84,6 +93,5 @@ class ItemController extends Controller
             'status' => true,
             'message' => __('Item returned successfully'),
         ]);
-
     }
 }

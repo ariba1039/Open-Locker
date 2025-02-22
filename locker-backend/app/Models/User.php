@@ -46,4 +46,20 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get all loans for this user
+     */
+    public function loans()
+    {
+        return $this->hasMany(ItemLoan::class);
+    }
+
+    /**
+     * Get active loans for this user
+     */
+    public function activeLoans()
+    {
+        return $this->hasMany(ItemLoan::class)->where('status', 'active');
+    }
 }

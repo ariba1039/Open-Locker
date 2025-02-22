@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Item;
+use App\Models\ItemLoan;
 use App\Models\User;
 use App\Services\LockerServiceInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,6 +12,8 @@ use Tests\TestCase;
 class ItemControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $lockerService;
 
     protected function setUp(): void
     {
@@ -41,22 +44,23 @@ class ItemControllerTest extends TestCase
         $response = $this->actingAs(User::factory()->create())->getJson('/api/items');
 
         $response->assertJsonStructure([
-
-            [
+            '*' => [
                 'id',
                 'name',
                 'description',
                 'image_path',
                 'locker_id',
-            ],
-
+                'borrowed',
+                'created_at',
+                'updated_at'
+            ]
         ]);
     }
 
     public function test_user_can_borrow_item()
     {
         $user = User::factory()->create();
-        $item = Item::factory()->create(['borrower_id' => null]);
+        $item = Item::factory()->create();
 
         $this->lockerService->expects($this->once())
             ->method('openLocker')
@@ -71,16 +75,23 @@ class ItemControllerTest extends TestCase
                 'message' => __('Item borrowed successfully'),
             ]);
 
-        $this->assertDatabaseHas('items', [
-            'id' => $item->id,
-            'borrower_id' => $user->id,
+        $this->assertDatabaseHas('item_loans', [
+            'item_id' => $item->id,
+            'user_id' => $user->id,
+            'returned_at' => null,
         ]);
     }
 
     public function test_user_can_return_item()
     {
         $user = User::factory()->create();
-        $item = Item::factory()->create(['borrower_id' => $user->id]);
+        $item = Item::factory()->create();
+
+        $loan = ItemLoan::create([
+            'item_id' => $item->id,
+            'user_id' => $user->id,
+            'borrowed_at' => now(),
+        ]);
 
         $this->lockerService->expects($this->once())
             ->method('openLocker')
@@ -95,16 +106,25 @@ class ItemControllerTest extends TestCase
                 'message' => __('Item returned successfully'),
             ]);
 
-        $this->assertDatabaseHas('items', [
-            'id' => $item->id,
-            'borrower_id' => null,
+        $this->assertDatabaseHas('item_loans', [
+            'id' => $loan->id,
+            'item_id' => $item->id,
+            'user_id' => $user->id,
         ]);
+        $this->assertNotNull($loan->fresh()->returned_at);
     }
 
     public function test_user_cannot_borrow_item_already_borrowed()
     {
         $user = User::factory()->create();
-        $item = Item::factory()->create(['borrower_id' => $user->id]);
+        $otherUser = User::factory()->create();
+        $item = Item::factory()->create();
+
+        ItemLoan::create([
+            'item_id' => $item->id,
+            'user_id' => $otherUser->id,
+            'borrowed_at' => now(),
+        ]);
 
         $response = $this->actingAs($user)->postJson(route('items.borrow', $item->id));
 
@@ -118,7 +138,7 @@ class ItemControllerTest extends TestCase
     public function test_user_cannot_return_item_not_borrowed()
     {
         $user = User::factory()->create();
-        $item = Item::factory()->create(['borrower_id' => null]);
+        $item = Item::factory()->create();
 
         $response = $this->actingAs($user)->postJson(route('items.return', $item->id));
 
@@ -133,9 +153,26 @@ class ItemControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $otherUser = User::factory()->create();
-        $borrowedItems = Item::factory()->count(3)->create(['borrower_id' => $user->id]);
-        $borrowedByOtherItems = Item::factory()->count(3)->create(['borrower_id' => $otherUser->id]);
-        $otherItems = Item::factory()->count(2)->create(['borrower_id' => null]);
+
+        $borrowedItems = Item::factory()->count(3)->create();
+        foreach ($borrowedItems as $item) {
+            ItemLoan::create([
+                'item_id' => $item->id,
+                'user_id' => $user->id,
+                'borrowed_at' => now(),
+            ]);
+        }
+
+        $borrowedByOtherItems = Item::factory()->count(2)->create();
+        foreach ($borrowedByOtherItems as $item) {
+            ItemLoan::create([
+                'item_id' => $item->id,
+                'user_id' => $otherUser->id,
+                'borrowed_at' => now(),
+            ]);
+        }
+
+        Item::factory()->count(2)->create();
 
         $response = $this->actingAs($user)->getJson(route('items.borrowed'));
 
@@ -151,5 +188,23 @@ class ItemControllerTest extends TestCase
                 'borrowed' => true,
             ]);
         }
+    }
+
+    public function test_returned_items_are_not_shown_in_borrowed_items()
+    {
+        $user = User::factory()->create();
+        $item = Item::factory()->create();
+
+        $loan = ItemLoan::create([
+            'item_id' => $item->id,
+            'user_id' => $user->id,
+            'borrowed_at' => now(),
+        ]);
+        $loan->update(['returned_at' => now()]);
+
+        $response = $this->actingAs($user)->getJson(route('items.borrowed'));
+
+        $response->assertStatus(200)
+            ->assertJsonCount(0);
     }
 }

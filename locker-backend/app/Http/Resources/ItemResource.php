@@ -20,6 +20,8 @@ class ItemResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $activeLoan = $this->resource->activeLoan;
+
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
@@ -27,7 +29,7 @@ class ItemResource extends JsonResource
             'image_path' => $this->resource->image_path,
             'locker_id' => $this->resource->locker_id,
             /** @var bool */
-            'borrowed' => (bool) $this->resource->borrower_id,
+            'borrowed' => $activeLoan !== null,
             'created_at' => $this->resource->created_at,
             'updated_at' => $this->resource->updated_at,
         ];
