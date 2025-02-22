@@ -52,8 +52,8 @@ class ItemControllerTest extends TestCase
                 'locker_id',
                 'borrowed',
                 'created_at',
-                'updated_at'
-            ]
+                'updated_at',
+            ],
         ]);
     }
 

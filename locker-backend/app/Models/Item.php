@@ -15,7 +15,7 @@ class Item extends Model
         'name',
         'description',
         'image_path',
-        'locker_id'
+        'locker_id',
     ];
 
     /**
