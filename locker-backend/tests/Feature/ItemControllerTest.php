@@ -87,10 +87,9 @@ class ItemControllerTest extends TestCase
         $user = User::factory()->create();
         $item = Item::factory()->create();
 
-        $loan = ItemLoan::create([
+        $loan = ItemLoan::factory()->create([
             'item_id' => $item->id,
             'user_id' => $user->id,
-            'borrowed_at' => now(),
         ]);
 
         $this->lockerService->expects($this->once())
@@ -120,10 +119,9 @@ class ItemControllerTest extends TestCase
         $otherUser = User::factory()->create();
         $item = Item::factory()->create();
 
-        ItemLoan::create([
+        ItemLoan::factory()->create([
             'item_id' => $item->id,
             'user_id' => $otherUser->id,
-            'borrowed_at' => now(),
         ]);
 
         $response = $this->actingAs($user)->postJson(route('items.borrow', $item->id));
@@ -156,19 +154,17 @@ class ItemControllerTest extends TestCase
 
         $borrowedItems = Item::factory()->count(3)->create();
         foreach ($borrowedItems as $item) {
-            ItemLoan::create([
+            ItemLoan::factory()->create([
                 'item_id' => $item->id,
                 'user_id' => $user->id,
-                'borrowed_at' => now(),
             ]);
         }
 
         $borrowedByOtherItems = Item::factory()->count(2)->create();
         foreach ($borrowedByOtherItems as $item) {
-            ItemLoan::create([
+            ItemLoan::factory()->create([
                 'item_id' => $item->id,
                 'user_id' => $otherUser->id,
-                'borrowed_at' => now(),
             ]);
         }
 
@@ -195,12 +191,11 @@ class ItemControllerTest extends TestCase
         $user = User::factory()->create();
         $item = Item::factory()->create();
 
-        $loan = ItemLoan::create([
+        $loan = ItemLoan::factory()->create([
             'item_id' => $item->id,
             'user_id' => $user->id,
-            'borrowed_at' => now(),
+            'returned_at' => now(),
         ]);
-        $loan->update(['returned_at' => now()]);
 
         $response = $this->actingAs($user)->getJson(route('items.borrowed'));
 
