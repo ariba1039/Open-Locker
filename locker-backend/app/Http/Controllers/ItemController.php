@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ItemLoanResource;
 use App\Http\Resources\ItemResource;
 use App\Models\Item;
 use App\Models\ItemLoan;
@@ -93,5 +94,19 @@ class ItemController extends Controller
             'status' => true,
             'message' => __('Item returned successfully'),
         ]);
+    }
+
+    /**
+     * Get loan history for the current user.
+     *
+     * @response AnonymousResourceCollection<ItemLoanResource>
+     */
+    public function getLoanHistoryForUser(Request $request): AnonymousResourceCollection
+    {
+        $loans = ItemLoan::where('user_id', $request->user()->id)
+            ->with('item')
+            ->get();
+
+        return ItemLoanResource::collection($loans);
     }
 }

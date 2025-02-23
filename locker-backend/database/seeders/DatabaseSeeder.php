@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Item;
+use App\Models\ItemLoan;
 use App\Models\User;
 use App\Services\FakeLockerService;
 use Database\Factories\ItemFactory;
@@ -28,5 +30,27 @@ class DatabaseSeeder extends Seeder
         ItemFactory::new()->count(count($locker_list))->create([
             'locker_id' => Arr::random($locker_list)->id,
         ]);
+
+        // Erstelle einige Benutzer
+        $users = User::factory()->count(5)->create();
+
+        // Erstelle einige Items
+        $items = Item::factory()->count(10)->create();
+
+        // Erstelle einige aktive Ausleihen
+        foreach ($items->take(5) as $item) {
+            ItemLoan::factory()->create([
+                'item_id' => $item->id,
+                'user_id' => $users->random()->id,
+            ]);
+        }
+
+        // Erstelle einige zurückgegebene Ausleihen
+        foreach ($items->skip(5) as $item) {
+            ItemLoan::factory()->returned()->create([
+                'item_id' => $item->id,
+                'user_id' => $users->random()->id,
+            ]);
+        }
     }
 }

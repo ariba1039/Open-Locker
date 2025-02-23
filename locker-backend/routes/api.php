@@ -32,5 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('{item}/borrow', 'borrowItem')->name('items.borrow');
         Route::post('{item}/return', 'returnItem')->name('items.return');
+
+        Route::get('loan-history', 'getLoanHistoryForUser')->name('items.loanHistory');
     });
 });

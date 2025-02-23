@@ -202,4 +202,72 @@ class ItemControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonCount(0);
     }
+
+    public function test_user_can_view_loan_history()
+    {
+        $user = User::factory()->create();
+        $otherUser = User::factory()->create();
+
+        $borrowedItems = Item::factory(2)->create();
+        $returnedItems = Item::factory(2)->create();
+
+        // Create loans for the test user
+        foreach ($borrowedItems as $item) {
+            ItemLoan::factory()->create([
+                'item_id' => $item->id,
+                'user_id' => $user->id,
+            ]);
+        }
+
+        foreach ($returnedItems as $item) {
+            ItemLoan::factory()->create([
+                'item_id' => $item->id,
+                'user_id' => $user->id,
+                'returned_at' => now(),
+            ]);
+        }
+
+        // Create loans for other user
+        $otherUserItems = Item::factory(2)->create();
+        foreach ($otherUserItems as $item) {
+            ItemLoan::factory()->create([
+                'item_id' => $item->id,
+                'user_id' => $otherUser->id,
+            ]);
+        }
+
+        $response = $this->actingAs($user)->getJson(route('items.loanHistory'));
+
+        $response->assertStatus(200)
+            ->assertJsonCount(4)
+            ->assertJsonStructure([
+                '*' => [
+                    'id',
+                    'item' => [
+                        'id',
+                        'name',
+                        'description',
+                        'image_path',
+                        'locker_id',
+                        'borrowed',
+                        'created_at',
+                        'updated_at',
+                    ],
+                    'user_id',
+                    'borrowed_at',
+                    'returned_at',
+                ],
+            ]);
+
+        // Überprüfe, ob die Ausleihen des Benutzers in der Antwort enthalten sind
+        foreach ($borrowedItems as $index => $item) {
+            $response->assertJsonPath($index.'.item.id', $item->id);
+            $response->assertJsonPath($index.'.user_id', $user->id);
+        }
+
+        foreach ($returnedItems as $index => $item) {
+            $response->assertJsonPath(($index + 2).'.item.id', $item->id);
+            $response->assertJsonPath(($index + 2).'.user_id', $user->id);
+        }
+    }
 }
