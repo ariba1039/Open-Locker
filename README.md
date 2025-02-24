@@ -14,6 +14,7 @@ We're still in the process of setting up the project, so feel free to return in 
 This project is organized as a monorepo, which means it contains multiple projects within a single repository. Currently, the main project in this repository is:
 
 - `locker-backend`: The backend application built with Laravel.
+- `locker_app`: The frontend flutter app.
 
 Using a monorepo allows us to manage all related projects in one place, making it easier to share code and manage dependencies.
 
