@@ -54,8 +54,8 @@ class LockerControllerTest extends TestCase
                     'modbus_address',
                     'coil_register',
                     'status_register',
-                    'is_open'
-                ]
+                    'is_open',
+                ],
             ]);
     }
 
@@ -95,7 +95,7 @@ class LockerControllerTest extends TestCase
         $response = $this->actingAs($user)->postJson(route('admin.lockers.open', ['lockerId' => 'A-01']));
         $response->assertStatus(403);
     }
-    
+
     public function test_admin_cannot_open_nonexistent_locker(): void
     {
         // Create an admin user
@@ -118,7 +118,7 @@ class LockerControllerTest extends TestCase
                 'message' => __('Failed to open locker.'),
             ]);
     }
-    
+
     public function test_admin_can_get_locker_with_different_status(): void
     {
         // Create an admin user
@@ -159,7 +159,7 @@ class LockerControllerTest extends TestCase
                 ],
             ]);
     }
-    
+
     public function test_unauthenticated_user_cannot_access_locker_endpoints(): void
     {
         // Try to get the locker list without authentication

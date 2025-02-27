@@ -15,15 +15,7 @@ use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
     /**
-     * Konstruktor für den AdminController
-     */
-    public function __construct()
-    {
-        // In Laravel 11 wird die Middleware in den Routen angewendet
-    }
-
-    /**
-     * Gibt eine Liste aller Benutzer zurück
+     * List of alle users
      *
      * @response AnonymousResourceCollection<UserResource>
      */
