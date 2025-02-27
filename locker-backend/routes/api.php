@@ -48,7 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::post('users/register', [AuthController::class, 'register'])->name('users.register');
-        
+
         // Locker-Routen für Administratoren
         Route::controller(LockerController::class)->prefix('lockers')->name('lockers.')->group(function () {
             Route::get('', 'index')->name('index');

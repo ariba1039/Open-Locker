@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
+use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Dedoc\Scramble\Attributes\SchemaName;
 
 /**
  * @property Locker $resource
@@ -24,4 +24,4 @@ class LockerResource extends JsonResource
             'is_open' => $this->isOpen,
         ];
     }
-} 
+}

@@ -51,8 +51,8 @@ class LockerControllerTest extends TestCase
             ->assertJsonStructure([
                 '*' => [
                     'id',
-                    'is_open'
-                ]
+                    'is_open',
+                ],
             ]);
     }
 
@@ -92,7 +92,7 @@ class LockerControllerTest extends TestCase
         $response = $this->actingAs($user)->postJson(route('admin.lockers.open', ['lockerId' => 'A-01']));
         $response->assertStatus(403);
     }
-    
+
     public function test_admin_cannot_open_nonexistent_locker(): void
     {
         // Erstelle einen Admin-Benutzer
@@ -115,7 +115,7 @@ class LockerControllerTest extends TestCase
                 'message' => __('Failed to open locker.'),
             ]);
     }
-    
+
     public function test_admin_can_get_locker_with_different_status(): void
     {
         // Erstelle einen Admin-Benutzer
@@ -156,7 +156,7 @@ class LockerControllerTest extends TestCase
                 ],
             ]);
     }
-    
+
     public function test_unauthenticated_user_cannot_access_locker_endpoints(): void
     {
         // Versuche, die Locker-Liste abzurufen ohne Authentifizierung
@@ -167,4 +167,4 @@ class LockerControllerTest extends TestCase
         $response = $this->postJson(route('admin.lockers.open', ['lockerId' => 'A-01']));
         $response->assertStatus(401); // Unauthenticated
     }
-} 
+}

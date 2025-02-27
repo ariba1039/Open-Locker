@@ -26,29 +26,29 @@ class LockerController extends Controller
 
     /**
      * Gibt eine Liste aller verfügbaren Locker zurück
-     * 
+     *
      * @response AnonymousResourceCollection<LockerResource>
      */
     public function index(): AnonymousResourceCollection
     {
         $lockers = $this->lockerService->getLockerList();
-        
+
         // Erstelle eine Sammlung von Lockern mit Status
         $lockersWithStatus = [];
         foreach ($lockers as $locker) {
             $lockersWithStatus[] = [
                 'original' => $locker,
-                'isOpen' => $this->lockerService->getLockerStatus($locker->id)
+                'isOpen' => $this->lockerService->getLockerStatus($locker->id),
             ];
         }
-        
+
         return LockerResource::collection(collect($lockersWithStatus)->map(function ($item) {
             return (object) [
                 'id' => $item['original']->id,
                 'modbusAddress' => $item['original']->modbusAddress,
                 'coilRegister' => $item['original']->coilRegister,
                 'statusRegister' => $item['original']->statusRegister,
-                'isOpen' => $item['isOpen']
+                'isOpen' => $item['isOpen'],
             ];
         }));
     }
@@ -72,4 +72,4 @@ class LockerController extends Controller
             'message' => __('Failed to open locker.'),
         ], 500);
     }
-} 
+}
