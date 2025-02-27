@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LockerController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -47,5 +48,11 @@ Route::middleware('auth:sanctum')->group(function () {
         });
 
         Route::post('users/register', [AuthController::class, 'register'])->name('users.register');
+        
+        // Locker-Routen für Administratoren
+        Route::controller(LockerController::class)->prefix('lockers')->name('lockers.')->group(function () {
+            Route::get('', 'index')->name('index');
+            Route::post('{lockerId}/open', 'openLocker')->name('open');
+        });
     });
 });
