@@ -17,6 +17,8 @@ class Item {
     required this.name,
     required this.description,
     required this.imagePath,
+    required this.lockerId,
+    required this.borrowed,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -28,6 +30,10 @@ class Item {
   String description;
 
   String imagePath;
+
+  String lockerId;
+
+  bool borrowed;
 
   DateTime? createdAt;
 
@@ -41,6 +47,8 @@ class Item {
           other.name == name &&
           other.description == description &&
           other.imagePath == imagePath &&
+          other.lockerId == lockerId &&
+          other.borrowed == borrowed &&
           other.createdAt == createdAt &&
           other.updatedAt == updatedAt;
 
@@ -51,12 +59,14 @@ class Item {
       (name.hashCode) +
       (description.hashCode) +
       (imagePath.hashCode) +
+      (lockerId.hashCode) +
+      (borrowed.hashCode) +
       (createdAt == null ? 0 : createdAt!.hashCode) +
       (updatedAt == null ? 0 : updatedAt!.hashCode);
 
   @override
   String toString() =>
-      'Item[id=$id, name=$name, description=$description, imagePath=$imagePath, createdAt=$createdAt, updatedAt=$updatedAt]';
+      'Item[id=$id, name=$name, description=$description, imagePath=$imagePath, lockerId=$lockerId, borrowed=$borrowed, createdAt=$createdAt, updatedAt=$updatedAt]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -64,6 +74,8 @@ class Item {
     json[r'name'] = this.name;
     json[r'description'] = this.description;
     json[r'image_path'] = this.imagePath;
+    json[r'locker_id'] = this.lockerId;
+    json[r'borrowed'] = this.borrowed;
     if (this.createdAt != null) {
       json[r'created_at'] = this.createdAt!.toUtc().toIso8601String();
     } else {
@@ -102,6 +114,8 @@ class Item {
         name: mapValueOfType<String>(json, r'name')!,
         description: mapValueOfType<String>(json, r'description')!,
         imagePath: mapValueOfType<String>(json, r'image_path')!,
+        lockerId: mapValueOfType<String>(json, r'locker_id')!,
+        borrowed: mapValueOfType<bool>(json, r'borrowed')!,
         createdAt: mapDateTime(json, r'created_at', r''),
         updatedAt: mapDateTime(json, r'updated_at', r''),
       );
@@ -164,6 +178,8 @@ class Item {
     'name',
     'description',
     'image_path',
+    'locker_id',
+    'borrowed',
     'created_at',
     'updated_at',
   };

@@ -16,7 +16,10 @@ class HomeScreen extends StatelessWidget {
         ),
         body: Row(
           children: [
-            if (useSideNavRail) const SideNav(),
+            if (useSideNavRail)
+              const SideNav(
+                selectedIndex: 0,
+              ),
             Expanded(
               child: const ItemList(),
             ),

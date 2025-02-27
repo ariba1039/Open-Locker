@@ -15,7 +15,7 @@ class ItemList extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 840),
           child: FutureBuilder(
-            future: ItemApi(authState.client).itemIndex(),
+            future: ItemApi(authState.client).itemsIndex(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());

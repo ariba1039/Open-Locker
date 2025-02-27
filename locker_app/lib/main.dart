@@ -27,9 +27,19 @@ GoRouter router() {
       GoRoute(
           path: '/profile', builder: (context, state) => const ProfileScreen()),
     ],
-    redirect: (context, state) {
-      final authState = context.read<AuthState>().isAuthenticated;
-      if (!authState) return '/login';
+    redirect: (context, state) async {
+      final isAuthenticated = context.read<AuthState>().isAuthenticated;
+      if (!isAuthenticated) {
+        try {
+          await context.read<AuthState>().loadUser();
+          return state.matchedLocation != '/login'
+              ? state.matchedLocation
+              : '/home';
+        } catch (e) {
+          return '/login';
+        }
+      }
+      if (!isAuthenticated) return '/login';
       return state.matchedLocation;
     },
   );

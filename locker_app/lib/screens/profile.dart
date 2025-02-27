@@ -28,7 +28,10 @@ class ProfileScreen extends StatelessWidget {
         ),
         body: Row(
           children: [
-            if (useSideNavRail) const SideNav(),
+            if (useSideNavRail)
+              const SideNav(
+                selectedIndex: 1,
+              ),
             Expanded(
               child: Center(child: Text(name)),
             ),

@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **name** | **String** |  | 
 **description** | **String** |  | 
 **imagePath** | **String** |  | 
+**lockerId** | **String** |  | 
+**borrowed** | **bool** |  | 
 **createdAt** | [**DateTime**](DateTime.md) |  | 
 **updatedAt** | [**DateTime**](DateTime.md) |  | 
 

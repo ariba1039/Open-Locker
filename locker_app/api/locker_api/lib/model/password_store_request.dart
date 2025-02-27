@@ -10,49 +10,57 @@
 
 part of openapi.api;
 
-class TokenResponse {
-  /// Returns a new [TokenResponse] instance.
-  TokenResponse({
+class PasswordStoreRequest {
+  /// Returns a new [PasswordStoreRequest] instance.
+  PasswordStoreRequest({
     required this.token,
-    required this.name,
-    required this.verified,
+    required this.email,
+    required this.password,
+    required this.passwordConfirmation,
   });
 
   String token;
 
-  String name;
+  String email;
 
-  bool verified;
+  String password;
+
+  String passwordConfirmation;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TokenResponse &&
+      other is PasswordStoreRequest &&
           other.token == token &&
-          other.name == name &&
-          other.verified == verified;
+          other.email == email &&
+          other.password == password &&
+          other.passwordConfirmation == passwordConfirmation;
 
   @override
   int get hashCode =>
       // ignore: unnecessary_parenthesis
-      (token.hashCode) + (name.hashCode) + (verified.hashCode);
+      (token.hashCode) +
+      (email.hashCode) +
+      (password.hashCode) +
+      (passwordConfirmation.hashCode);
 
   @override
   String toString() =>
-      'TokenResponse[token=$token, name=$name, verified=$verified]';
+      'PasswordStoreRequest[token=$token, email=$email, password=$password, passwordConfirmation=$passwordConfirmation]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
     json[r'token'] = this.token;
-    json[r'name'] = this.name;
-    json[r'verified'] = this.verified;
+    json[r'email'] = this.email;
+    json[r'password'] = this.password;
+    json[r'password_confirmation'] = this.passwordConfirmation;
     return json;
   }
 
-  /// Returns a new [TokenResponse] instance and imports its values from
+  /// Returns a new [PasswordStoreRequest] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static TokenResponse? fromJson(dynamic value) {
+  static PasswordStoreRequest? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -62,30 +70,32 @@ class TokenResponse {
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key),
-              'Required key "TokenResponse[$key]" is missing from JSON.');
+              'Required key "PasswordStoreRequest[$key]" is missing from JSON.');
           assert(json[key] != null,
-              'Required key "TokenResponse[$key]" has a null value in JSON.');
+              'Required key "PasswordStoreRequest[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return TokenResponse(
+      return PasswordStoreRequest(
         token: mapValueOfType<String>(json, r'token')!,
-        name: mapValueOfType<String>(json, r'name')!,
-        verified: mapValueOfType<bool>(json, r'verified')!,
+        email: mapValueOfType<String>(json, r'email')!,
+        password: mapValueOfType<String>(json, r'password')!,
+        passwordConfirmation:
+            mapValueOfType<String>(json, r'password_confirmation')!,
       );
     }
     return null;
   }
 
-  static List<TokenResponse> listFromJson(
+  static List<PasswordStoreRequest> listFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final result = <TokenResponse>[];
+    final result = <PasswordStoreRequest>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = TokenResponse.fromJson(row);
+        final value = PasswordStoreRequest.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -94,12 +104,12 @@ class TokenResponse {
     return result.toList(growable: growable);
   }
 
-  static Map<String, TokenResponse> mapFromJson(dynamic json) {
-    final map = <String, TokenResponse>{};
+  static Map<String, PasswordStoreRequest> mapFromJson(dynamic json) {
+    final map = <String, PasswordStoreRequest>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = TokenResponse.fromJson(entry.value);
+        final value = PasswordStoreRequest.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -108,17 +118,17 @@ class TokenResponse {
     return map;
   }
 
-  // maps a json object with a list of TokenResponse-objects as value to a dart map
-  static Map<String, List<TokenResponse>> mapListFromJson(
+  // maps a json object with a list of PasswordStoreRequest-objects as value to a dart map
+  static Map<String, List<PasswordStoreRequest>> mapListFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final map = <String, List<TokenResponse>>{};
+    final map = <String, List<PasswordStoreRequest>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = TokenResponse.listFromJson(
+        map[entry.key] = PasswordStoreRequest.listFromJson(
           entry.value,
           growable: growable,
         );
@@ -130,7 +140,8 @@ class TokenResponse {
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
     'token',
-    'name',
-    'verified',
+    'email',
+    'password',
+    'password_confirmation',
   };
 }

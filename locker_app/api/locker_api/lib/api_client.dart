@@ -231,12 +231,20 @@ class ApiClient {
           return value is DateTime ? value : DateTime.tryParse(value);
         case 'AuthLoginRequest':
           return AuthLoginRequest.fromJson(value);
-        case 'AuthLogout200Response':
-          return AuthLogout200Response.fromJson(value);
         case 'AuthRegisterRequest':
           return AuthRegisterRequest.fromJson(value);
         case 'Item':
           return Item.fromJson(value);
+        case 'ItemLoan':
+          return ItemLoan.fromJson(value);
+        case 'ItemsBorrow200Response':
+          return ItemsBorrow200Response.fromJson(value);
+        case 'PasswordEmail200Response':
+          return PasswordEmail200Response.fromJson(value);
+        case 'PasswordEmailRequest':
+          return PasswordEmailRequest.fromJson(value);
+        case 'PasswordStoreRequest':
+          return PasswordStoreRequest.fromJson(value);
         case 'TokenResponse':
           return TokenResponse.fromJson(value);
         case 'User':

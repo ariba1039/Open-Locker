@@ -103,7 +103,7 @@ class AuthApi {
   }
 
   /// Logout
-  Future<AuthLogout200Response?> authLogout() async {
+  Future<PasswordEmail200Response?> authLogout() async {
     final response = await authLogoutWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -115,8 +115,8 @@ class AuthApi {
         response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(
         await _decodeBodyBytes(response),
-        'AuthLogout200Response',
-      ) as AuthLogout200Response;
+        'PasswordEmail200Response',
+      ) as PasswordEmail200Response;
     }
     return null;
   }
@@ -223,6 +223,241 @@ class AuthApi {
         await _decodeBodyBytes(response),
         'User',
       ) as User;
+    }
+    return null;
+  }
+
+  /// Send Password E-Mail
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PasswordEmailRequest] passwordEmailRequest (required):
+  Future<Response> passwordEmailWithHttpInfo(
+    PasswordEmailRequest passwordEmailRequest,
+  ) async {
+    // ignore: prefer_const_declarations
+    final path = r'/password/email';
+
+    // ignore: prefer_final_locals
+    Object? postBody = passwordEmailRequest;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Send Password E-Mail
+  ///
+  /// Parameters:
+  ///
+  /// * [PasswordEmailRequest] passwordEmailRequest (required):
+  Future<PasswordEmail200Response?> passwordEmail(
+    PasswordEmailRequest passwordEmailRequest,
+  ) async {
+    final response = await passwordEmailWithHttpInfo(
+      passwordEmailRequest,
+    );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'PasswordEmail200Response',
+      ) as PasswordEmail200Response;
+    }
+    return null;
+  }
+
+  /// Reset Password with Token
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [PasswordStoreRequest] passwordStoreRequest (required):
+  Future<Response> passwordStoreWithHttpInfo(
+    PasswordStoreRequest passwordStoreRequest,
+  ) async {
+    // ignore: prefer_const_declarations
+    final path = r'/reset-password';
+
+    // ignore: prefer_final_locals
+    Object? postBody = passwordStoreRequest;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Reset Password with Token
+  ///
+  /// Parameters:
+  ///
+  /// * [PasswordStoreRequest] passwordStoreRequest (required):
+  Future<PasswordEmail200Response?> passwordStore(
+    PasswordStoreRequest passwordStoreRequest,
+  ) async {
+    final response = await passwordStoreWithHttpInfo(
+      passwordStoreRequest,
+    );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'PasswordEmail200Response',
+      ) as PasswordEmail200Response;
+    }
+    return null;
+  }
+
+  /// Send Email Verification Notification
+  ///
+  /// Note: This method returns the HTTP [Response].
+  Future<Response> verificationSendWithHttpInfo() async {
+    // ignore: prefer_const_declarations
+    final path = r'/email/verification-notification';
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Send Email Verification Notification
+  Future<PasswordEmail200Response?> verificationSend() async {
+    final response = await verificationSendWithHttpInfo();
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'PasswordEmail200Response',
+      ) as PasswordEmail200Response;
+    }
+    return null;
+  }
+
+  /// Verify Email Address
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [String] id (required):
+  ///
+  /// * [String] hash (required):
+  Future<Response> verificationVerifyWithHttpInfo(
+    String id,
+    String hash,
+  ) async {
+    // ignore: prefer_const_declarations
+    final path = r'/verify-email/{id}/{hash}'
+        .replaceAll('{id}', id)
+        .replaceAll('{hash}', hash);
+
+    // ignore: prefer_final_locals
+    Object? postBody;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>[];
+
+    return apiClient.invokeAPI(
+      path,
+      'GET',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Verify Email Address
+  ///
+  /// Parameters:
+  ///
+  /// * [String] id (required):
+  ///
+  /// * [String] hash (required):
+  Future<PasswordEmail200Response?> verificationVerify(
+    String id,
+    String hash,
+  ) async {
+    final response = await verificationVerifyWithHttpInfo(
+      id,
+      hash,
+    );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'PasswordEmail200Response',
+      ) as PasswordEmail200Response;
     }
     return null;
   }

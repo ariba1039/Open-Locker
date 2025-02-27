@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class SideNav extends StatelessWidget {
-  const SideNav({super.key});
+  final int selectedIndex;
+  const SideNav({super.key, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class SideNav extends StatelessWidget {
           context.go('/profile');
         }
       },
-      selectedIndex: 0,
+      selectedIndex: selectedIndex,
       labelType: NavigationRailLabelType.all,
     );
   }

@@ -32,9 +32,13 @@ part 'api/auth_api.dart';
 part 'api/item_api.dart';
 
 part 'model/auth_login_request.dart';
-part 'model/auth_logout200_response.dart';
 part 'model/auth_register_request.dart';
 part 'model/item.dart';
+part 'model/item_loan.dart';
+part 'model/items_borrow200_response.dart';
+part 'model/password_email200_response.dart';
+part 'model/password_email_request.dart';
+part 'model/password_store_request.dart';
 part 'model/token_response.dart';
 part 'model/user.dart';
 

@@ -10,49 +10,63 @@
 
 part of openapi.api;
 
-class TokenResponse {
-  /// Returns a new [TokenResponse] instance.
-  TokenResponse({
-    required this.token,
-    required this.name,
-    required this.verified,
+class ItemLoan {
+  /// Returns a new [ItemLoan] instance.
+  ItemLoan({
+    required this.id,
+    required this.item,
+    required this.userId,
+    required this.borrowedAt,
+    required this.returnedAt,
   });
 
-  String token;
+  String id;
 
-  String name;
+  Item item;
 
-  bool verified;
+  String userId;
+
+  String borrowedAt;
+
+  String returnedAt;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TokenResponse &&
-          other.token == token &&
-          other.name == name &&
-          other.verified == verified;
+      other is ItemLoan &&
+          other.id == id &&
+          other.item == item &&
+          other.userId == userId &&
+          other.borrowedAt == borrowedAt &&
+          other.returnedAt == returnedAt;
 
   @override
   int get hashCode =>
       // ignore: unnecessary_parenthesis
-      (token.hashCode) + (name.hashCode) + (verified.hashCode);
+      (id.hashCode) +
+      (item.hashCode) +
+      (userId.hashCode) +
+      (borrowedAt.hashCode) +
+      (returnedAt.hashCode);
 
   @override
   String toString() =>
-      'TokenResponse[token=$token, name=$name, verified=$verified]';
+      'ItemLoan[id=$id, item=$item, userId=$userId, borrowedAt=$borrowedAt, returnedAt=$returnedAt]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    json[r'token'] = this.token;
-    json[r'name'] = this.name;
-    json[r'verified'] = this.verified;
+    json[r'id'] = this.id;
+    json[r'item'] = this.item;
+    json[r'user_id'] = this.userId;
+    json[r'borrowed_at'] = this.borrowedAt;
+    json[r'returned_at'] = this.returnedAt;
     return json;
   }
 
-  /// Returns a new [TokenResponse] instance and imports its values from
+  /// Returns a new [ItemLoan] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static TokenResponse? fromJson(dynamic value) {
+  static ItemLoan? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -62,30 +76,32 @@ class TokenResponse {
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key),
-              'Required key "TokenResponse[$key]" is missing from JSON.');
+              'Required key "ItemLoan[$key]" is missing from JSON.');
           assert(json[key] != null,
-              'Required key "TokenResponse[$key]" has a null value in JSON.');
+              'Required key "ItemLoan[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return TokenResponse(
-        token: mapValueOfType<String>(json, r'token')!,
-        name: mapValueOfType<String>(json, r'name')!,
-        verified: mapValueOfType<bool>(json, r'verified')!,
+      return ItemLoan(
+        id: mapValueOfType<String>(json, r'id')!,
+        item: Item.fromJson(json[r'item'])!,
+        userId: mapValueOfType<String>(json, r'user_id')!,
+        borrowedAt: mapValueOfType<String>(json, r'borrowed_at')!,
+        returnedAt: mapValueOfType<String>(json, r'returned_at')!,
       );
     }
     return null;
   }
 
-  static List<TokenResponse> listFromJson(
+  static List<ItemLoan> listFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final result = <TokenResponse>[];
+    final result = <ItemLoan>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = TokenResponse.fromJson(row);
+        final value = ItemLoan.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -94,12 +110,12 @@ class TokenResponse {
     return result.toList(growable: growable);
   }
 
-  static Map<String, TokenResponse> mapFromJson(dynamic json) {
-    final map = <String, TokenResponse>{};
+  static Map<String, ItemLoan> mapFromJson(dynamic json) {
+    final map = <String, ItemLoan>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = TokenResponse.fromJson(entry.value);
+        final value = ItemLoan.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -108,17 +124,17 @@ class TokenResponse {
     return map;
   }
 
-  // maps a json object with a list of TokenResponse-objects as value to a dart map
-  static Map<String, List<TokenResponse>> mapListFromJson(
+  // maps a json object with a list of ItemLoan-objects as value to a dart map
+  static Map<String, List<ItemLoan>> mapListFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final map = <String, List<TokenResponse>>{};
+    final map = <String, List<ItemLoan>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = TokenResponse.listFromJson(
+        map[entry.key] = ItemLoan.listFromJson(
           entry.value,
           growable: growable,
         );
@@ -129,8 +145,10 @@ class TokenResponse {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'token',
-    'name',
-    'verified',
+    'id',
+    'item',
+    'user_id',
+    'borrowed_at',
+    'returned_at',
   };
 }

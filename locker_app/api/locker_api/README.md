@@ -69,15 +69,27 @@ Class | Method | HTTP request | Description
 *AuthApi* | [**authLogout**](doc//AuthApi.md#authlogout) | **POST** /logout | Logout
 *AuthApi* | [**authRegister**](doc//AuthApi.md#authregister) | **POST** /register | Register
 *AuthApi* | [**authUser**](doc//AuthApi.md#authuser) | **GET** /user | Get current User
-*ItemApi* | [**itemIndex**](doc//ItemApi.md#itemindex) | **GET** /items | Get all Items
+*AuthApi* | [**passwordEmail**](doc//AuthApi.md#passwordemail) | **POST** /password/email | Send Password E-Mail
+*AuthApi* | [**passwordStore**](doc//AuthApi.md#passwordstore) | **POST** /reset-password | Reset Password with Token
+*AuthApi* | [**verificationSend**](doc//AuthApi.md#verificationsend) | **POST** /email/verification-notification | Send Email Verification Notification
+*AuthApi* | [**verificationVerify**](doc//AuthApi.md#verificationverify) | **GET** /verify-email/{id}/{hash} | Verify Email Address
+*ItemApi* | [**itemsBorrow**](doc//ItemApi.md#itemsborrow) | **POST** /items/{item}/borrow | Borrow a Item
+*ItemApi* | [**itemsBorrowed**](doc//ItemApi.md#itemsborrowed) | **GET** /items/borrowed | Get all Items from User
+*ItemApi* | [**itemsIndex**](doc//ItemApi.md#itemsindex) | **GET** /items | Get all Items
+*ItemApi* | [**itemsLoanHistory**](doc//ItemApi.md#itemsloanhistory) | **GET** /items/loan-history | Get loan history for the current user
+*ItemApi* | [**itemsReturn**](doc//ItemApi.md#itemsreturn) | **POST** /items/{item}/return | Returns a Item
 
 
 ## Documentation For Models
 
  - [AuthLoginRequest](doc//AuthLoginRequest.md)
- - [AuthLogout200Response](doc//AuthLogout200Response.md)
  - [AuthRegisterRequest](doc//AuthRegisterRequest.md)
  - [Item](doc//Item.md)
+ - [ItemLoan](doc//ItemLoan.md)
+ - [ItemsBorrow200Response](doc//ItemsBorrow200Response.md)
+ - [PasswordEmail200Response](doc//PasswordEmail200Response.md)
+ - [PasswordEmailRequest](doc//PasswordEmailRequest.md)
+ - [PasswordStoreRequest](doc//PasswordStoreRequest.md)
  - [TokenResponse](doc//TokenResponse.md)
  - [User](doc//User.md)
 

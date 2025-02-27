@@ -1,6 +1,6 @@
 name: locker_app
 description: "Open Locker App"
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -12,7 +12,7 @@ dependencies:
 
   provider: ^6.1.2
   go_router: ^14.8.0
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.5.2
 
   openapi_generator: ^6.1.0
   openapi_generator_annotations: ^6.1.0
