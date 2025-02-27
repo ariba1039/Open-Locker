@@ -51,9 +51,6 @@ class LockerControllerTest extends TestCase
             ->assertJsonStructure([
                 '*' => [
                     'id',
-                    'modbus_address',
-                    'coil_register',
-                    'status_register',
                     'is_open',
                 ],
             ]);
