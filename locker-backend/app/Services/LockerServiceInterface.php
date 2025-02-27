@@ -13,7 +13,7 @@ interface LockerServiceInterface
      */
     public function getLockerList(): array;
 
-    public function openLocker($lockerId): bool;
+    public function openLocker(string $lockerId): bool;
 
-    public function getLockerStatus($lockerId): bool;
+    public function getLockerStatus(string $lockerId): bool;
 }

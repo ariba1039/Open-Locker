@@ -11,6 +11,9 @@ class Locker
         public ?int $statusRegister = null
     ) {}
 
+    /**
+     * @param  array{id: string, modbus_address: int, coil_register: int, status_register?: int|null}  $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(

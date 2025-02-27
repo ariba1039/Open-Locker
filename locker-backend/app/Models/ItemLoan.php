@@ -2,11 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @uses \Database\Factories\ItemLoanFactory
+ */
 class ItemLoan extends Model
 {
+    /** @use HasFactory<\Database\Factories\ItemLoanFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -24,16 +30,20 @@ class ItemLoan extends Model
 
     /**
      * Get the user who borrowed the item
+     *
+     * @return BelongsTo<User, ItemLoan>
      */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
      * Get the borrowed item
+     *
+     * @return BelongsTo<Item, ItemLoan>
      */
-    public function item()
+    public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
     }
@@ -56,24 +66,33 @@ class ItemLoan extends Model
 
     /**
      * Scope a query to only include active loans
+     *
+     * @param  Builder<ItemLoan>  $query
+     * @return Builder<ItemLoan>
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->whereNull('returned_at');
     }
 
     /**
      * Scope a query to only include returned loans
+     *
+     * @param  Builder<ItemLoan>  $query
+     * @return Builder<ItemLoan>
      */
-    public function scopeReturned($query)
+    public function scopeReturned(Builder $query): Builder
     {
         return $query->whereNotNull('returned_at');
     }
 
     /**
      * Scope a query to only include overdue loans
+     *
+     * @param  Builder<ItemLoan>  $query
+     * @return Builder<ItemLoan>
      */
-    public function scopeOverdue($query)
+    public function scopeOverdue(Builder $query): Builder
     {
         return $query->whereNull('returned_at')
             ->where('borrowed_at', '<=', now()->subDays(config('locker.loan_period', 14)));

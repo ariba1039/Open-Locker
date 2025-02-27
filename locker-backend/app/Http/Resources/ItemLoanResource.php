@@ -2,10 +2,22 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Item;
+use App\Models\ItemLoan;
+use Carbon\Carbon;
 use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property-read int $id
+ * @property-read Item $item
+ * @property-read int $user_id
+ * @property-read Carbon|null $borrowed_at
+ * @property-read Carbon|null $returned_at
+ *
+ * @mixin ItemLoan
+ */
 #[SchemaName('ItemLoan')]
 class ItemLoanResource extends JsonResource
 {

@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
+/**
+ * @uses \Database\Factories\ItemFactory
+ */
 class Item extends Model
 {
+    /** @use HasFactory<\Database\Factories\ItemFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -20,6 +25,8 @@ class Item extends Model
 
     /**
      * Get all loans for this item
+     *
+     * @return HasMany<ItemLoan, Item>
      */
     public function loans(): HasMany
     {
@@ -28,6 +35,8 @@ class Item extends Model
 
     /**
      * Get the current active loan for this item
+     *
+     * @return HasOne<ItemLoan, Item>
      */
     public function activeLoan(): HasOne
     {
@@ -36,8 +45,10 @@ class Item extends Model
 
     /**
      * Get the current borrower of the item through the active loan
+     *
+     * @return HasOneThrough<User, ItemLoan, Item>
      */
-    public function currentBorrower(): HasOne
+    public function currentBorrower(): HasOneThrough
     {
         return $this->hasOneThrough(
             User::class,

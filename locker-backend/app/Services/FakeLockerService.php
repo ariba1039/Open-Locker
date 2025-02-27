@@ -6,8 +6,12 @@ use App\Entities\Locker;
 
 class FakeLockerService implements LockerServiceInterface
 {
+    /** @var array<string, bool> */
     protected $fakeStatus = [];
 
+    /**
+     * @return array<Locker>
+     */
     public function getLockerList(): array
     {
         return [
@@ -23,14 +27,14 @@ class FakeLockerService implements LockerServiceInterface
         ];
     }
 
-    public function openLocker($lockerId): bool
+    public function openLocker(string $lockerId): bool
     {
         $this->fakeStatus[$lockerId] = true;
 
         return true;
     }
 
-    public function getLockerStatus($lockerId): bool
+    public function getLockerStatus(string $lockerId): bool
     {
         return $this->fakeStatus[$lockerId] ?? false;
     }

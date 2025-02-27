@@ -2,12 +2,15 @@
 
 namespace App\Http\Resources;
 
+use App\Entities\Locker;
 use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @property Locker $resource
+ * @property-read Locker $resource
+ * @property-read string $id
+ * @property-read bool $isOpen
  */
 #[SchemaName('Locker')]
 class LockerResource extends JsonResource

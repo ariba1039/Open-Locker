@@ -29,12 +29,6 @@ class AdminController extends Controller
      */
     public function makeAdmin(Request $request, User $user): JsonResponse
     {
-        if (! $user) {
-            return response()->json([
-                'message' => __('User not found.'),
-            ], 404);
-        }
-
         if ($user->isAdmin()) {
             return response()->json([
                 'message' => __('User is already an administrator.'),
@@ -54,12 +48,6 @@ class AdminController extends Controller
      */
     public function removeAdmin(Request $request, User $user): JsonResponse
     {
-        if (! $user) {
-            return response()->json([
-                'message' => __('User not found.'),
-            ], 404);
-        }
-
         if (! $user->isAdmin()) {
             return response()->json([
                 'message' => __('User is not an administrator.'),
