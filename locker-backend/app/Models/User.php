@@ -44,6 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin_since' => 'datetime',
         ];
     }
 
@@ -61,5 +62,31 @@ class User extends Authenticatable implements MustVerifyEmail
     public function activeLoans()
     {
         return $this->hasMany(ItemLoan::class)->where('status', 'active');
+    }
+
+    /**
+     * Check if the user is an admin
+     */
+    public function isAdmin(): bool
+    {
+        return $this->is_admin_since !== null;
+    }
+
+    /**
+     * Make user an admin
+     */
+    public function makeAdmin(): void
+    {
+        $this->is_admin_since = now();
+        $this->save();
+    }
+
+    /**
+     * Remove admin privileges from user
+     */
+    public function removeAdmin(): void
+    {
+        $this->is_admin_since = null;
+        $this->save();
     }
 }

@@ -18,6 +18,7 @@ class AuthControllerTest extends TestCase
     public function test_user_can_register()
     {
         $adminUser = User::factory()->create();
+        $adminUser->makeAdmin();
         $token = $adminUser->createToken('auth_token')->plainTextToken;
 
         $userData = [
@@ -29,7 +30,7 @@ class AuthControllerTest extends TestCase
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer '.$token,
-        ])->postJson('/api/register', $userData);
+        ])->postJson('/api/admin/users/register', $userData);
 
         $response->assertStatus(201)
             ->assertJsonStructure([
@@ -43,21 +44,43 @@ class AuthControllerTest extends TestCase
         ]);
     }
 
-    public function test_user_cannot_register_with_existing_email()
+    public function test_non_admin_cannot_register_users()
     {
-        $existingUser = User::factory()->create();
-        $token = $existingUser->createToken('auth_token')->plainTextToken;
+        $regularUser = User::factory()->create();
+        $token = $regularUser->createToken('auth_token')->plainTextToken;
 
         $userData = [
             'name' => $this->faker->name,
-            'email' => $existingUser->email, // Verwende bereits existierende E-Mail
+            'email' => $this->faker->unique()->safeEmail,
             'password' => 'password123',
             'password_confirmation' => 'password123',
         ];
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer '.$token,
-        ])->postJson('/api/register', $userData);
+        ])->postJson('/api/admin/users/register', $userData);
+
+        $response->assertStatus(403);
+    }
+
+    public function test_user_cannot_register_with_existing_email()
+    {
+        $adminUser = User::factory()->create();
+        $adminUser->makeAdmin();
+        $token = $adminUser->createToken('auth_token')->plainTextToken;
+
+        $existingUser = User::factory()->create();
+
+        $userData = [
+            'name' => $this->faker->name,
+            'email' => $existingUser->email,
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ];
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$token,
+        ])->postJson('/api/admin/users/register', $userData);
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors(['email']);
@@ -68,6 +91,7 @@ class AuthControllerTest extends TestCase
         Notification::fake();
 
         $adminUser = User::factory()->create();
+        $adminUser->makeAdmin();
 
         $userData = [
             'name' => $this->faker->name,
@@ -76,7 +100,9 @@ class AuthControllerTest extends TestCase
             'password_confirmation' => 'password123',
         ];
 
-        $response = $this->actingAs($adminUser)->postJson('/api/register', $userData);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer '.$adminUser->createToken('auth_token')->plainTextToken,
+        ])->postJson('/api/admin/users/register', $userData);
 
         $response->assertStatus(201);
 
@@ -167,15 +193,16 @@ class AuthControllerTest extends TestCase
     public function test_registration_validation_rules()
     {
         $adminUser = User::factory()->create();
+        $adminUser->makeAdmin();
         $token = $adminUser->createToken('auth_token')->plainTextToken;
 
         $response = $this->withHeaders([
             'Authorization' => 'Bearer '.$token,
-        ])->postJson('/api/register', [
+        ])->postJson('/api/admin/users/register', [
             'name' => '',
             'email' => 'not-an-email',
-            'password' => '123', // zu kurz
-            'password_confirmation' => '456', // stimmt nicht überein
+            'password' => '123',
+            'password_confirmation' => '456',
         ]);
 
         $response->assertStatus(422)
