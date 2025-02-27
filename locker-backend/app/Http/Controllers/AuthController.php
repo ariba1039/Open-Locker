@@ -131,7 +131,7 @@ class AuthController extends Controller
     /**
      * Send Password E-Mail
      */
-    public function sendPasswortEmail(Request $request): JsonResponse
+    public function sendPasswordEmail(Request $request): JsonResponse
     {
         $request->validate(['email' => 'required|email']);
 

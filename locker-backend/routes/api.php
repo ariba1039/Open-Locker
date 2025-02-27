@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login')->middleware(['throttle:6,1'])->name('auth.login');
-    Route::post('password/email', 'sendPasswortEmail')->middleware(['throttle:6,1'])->name('password.email');
+    Route::post('password/email', 'sendPasswordEmail')->middleware(['throttle:6,1'])->name('password.email');
 
     Route::post('reset-password', 'storeNewPassword')
         ->name('password.store');
@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('loan-history', 'getLoanHistoryForUser')->name('items.loanHistory');
     });
 
-    // Admin-Routen
+    // Admin routes
     Route::middleware(AdminMiddleware::class)->prefix('admin')->name('admin.')->group(function () {
         Route::controller(AdminController::class)->group(function () {
             Route::get('users', 'getAllUsers')->name('users.index');
@@ -49,7 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post('users/register', [AuthController::class, 'register'])->name('users.register');
 
-        // Locker-Routen für Administratoren
+        // Locker routes for administrators
         Route::controller(LockerController::class)->prefix('lockers')->name('lockers.')->group(function () {
             Route::get('', 'index')->name('index');
             Route::post('{lockerId}/open', 'openLocker')->name('open');

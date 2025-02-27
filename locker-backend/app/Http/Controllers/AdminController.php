@@ -58,7 +58,7 @@ class AdminController extends Controller
     }
 
     /**
-     * Entfernt Administratorrechte von einem Benutzer
+     * Removes administrator rights from a user
      */
     public function removeAdmin(Request $request, User $user): JsonResponse
     {
@@ -74,7 +74,7 @@ class AdminController extends Controller
             ], 400);
         }
 
-        // Verhindere, dass ein Admin sich selbst die Rechte entzieht
+        // Prevent an admin from removing their own rights
         if (Auth::id() === $user->id) {
             return response()->json([
                 'message' => __('You cannot remove your own administrator rights.'),
@@ -90,11 +90,10 @@ class AdminController extends Controller
     }
 
     /**
-     * Gibt Statistiken über das System zurück
+     * Returns statistics about the system
      */
     public function getStatistics(): JsonResponse
     {
-
         $totalUsers = User::count();
         $totalItems = Item::count();
         $totalLoans = ItemLoan::count();
@@ -102,13 +101,13 @@ class AdminController extends Controller
 
         return response()->json([
             'statistics' => [
-                /** @var int $totalUsers Gesamtzahl der Benutzer */
+                /** @var int $totalUsers Total number of users */
                 'total_users' => $totalUsers,
-                /** @var int $totalItems Gesamtzahl der Gegenstände */
+                /** @var int $totalItems Total number of items */
                 'total_items' => $totalItems,
-                /** @var int $totalLoans Gesamtzahl der Ausleihen */
+                /** @var int $totalLoans Total number of loans */
                 'total_loans' => $totalLoans,
-                /** @var int $activeLoans Anzahl der aktiven Ausleihen */
+                /** @var int $activeLoans Number of active loans */
                 'active_loans' => $activeLoans,
             ],
         ]);

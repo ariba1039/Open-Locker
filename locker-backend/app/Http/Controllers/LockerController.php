@@ -12,12 +12,12 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class LockerController extends Controller
 {
     /**
-     * Der Locker-Service für die Interaktion mit den Lockern
+     * The locker service for interacting with lockers
      */
     protected LockerServiceInterface $lockerService;
 
     /**
-     * Konstruktor für den LockerController
+     * Constructor for the LockerController
      */
     public function __construct(LockerServiceInterface $lockerService)
     {
@@ -25,36 +25,36 @@ class LockerController extends Controller
     }
 
     /**
-     * Gibt eine Liste aller verfügbaren Locker zurück
-     *
+     * Returns a list of all available lockers
+     * 
      * @response AnonymousResourceCollection<LockerResource>
      */
     public function index(): AnonymousResourceCollection
     {
         $lockers = $this->lockerService->getLockerList();
-
-        // Erstelle eine Sammlung von Lockern mit Status
+        
+        // Create a collection of lockers with status
         $lockersWithStatus = [];
         foreach ($lockers as $locker) {
             $lockersWithStatus[] = [
                 'original' => $locker,
-                'isOpen' => $this->lockerService->getLockerStatus($locker->id),
+                'isOpen' => $this->lockerService->getLockerStatus($locker->id)
             ];
         }
-
+        
         return LockerResource::collection(collect($lockersWithStatus)->map(function ($item) {
             return (object) [
                 'id' => $item['original']->id,
                 'modbusAddress' => $item['original']->modbusAddress,
                 'coilRegister' => $item['original']->coilRegister,
                 'statusRegister' => $item['original']->statusRegister,
-                'isOpen' => $item['isOpen'],
+                'isOpen' => $item['isOpen']
             ];
         }));
     }
 
     /**
-     * Öffnet einen Locker manuell
+     * Manually opens a locker
      */
     public function openLocker(Request $request, string $lockerId): JsonResponse
     {

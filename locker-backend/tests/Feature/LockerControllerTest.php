@@ -18,18 +18,18 @@ class LockerControllerTest extends TestCase
     {
         parent::setUp();
 
-        // Mock des LockerService
+        // Mock the LockerService
         $this->lockerService = $this->createMock(LockerServiceInterface::class);
         $this->app->instance(LockerServiceInterface::class, $this->lockerService);
     }
 
     public function test_admin_can_get_locker_list(): void
     {
-        // Erstelle einen Admin-Benutzer
+        // Create an admin user
         $admin = User::factory()->create();
         $admin->makeAdmin();
 
-        // Mock der Locker-Liste
+        // Mock the locker list
         $lockers = [
             new Locker('A-01', 1, 11, 111),
             new Locker('A-02', 2, 22, 222),
@@ -43,35 +43,38 @@ class LockerControllerTest extends TestCase
             ->method('getLockerStatus')
             ->willReturn(false);
 
-        // Führe die Anfrage aus
+        // Execute the request
         $response = $this->actingAs($admin)->getJson(route('admin.lockers.index'));
 
-        // Überprüfe die Antwort
+        // Check the response
         $response->assertStatus(200)
             ->assertJsonStructure([
                 '*' => [
                     'id',
-                    'is_open',
-                ],
+                    'modbus_address',
+                    'coil_register',
+                    'status_register',
+                    'is_open'
+                ]
             ]);
     }
 
     public function test_admin_can_open_locker(): void
     {
-        // Erstelle einen Admin-Benutzer
+        // Create an admin user
         $admin = User::factory()->create();
         $admin->makeAdmin();
 
-        // Mock der openLocker-Methode
+        // Mock the openLocker method
         $this->lockerService->expects($this->once())
             ->method('openLocker')
             ->with('A-01')
             ->willReturn(true);
 
-        // Führe die Anfrage aus
+        // Execute the request
         $response = $this->actingAs($admin)->postJson(route('admin.lockers.open', ['lockerId' => 'A-01']));
 
-        // Überprüfe die Antwort
+        // Check the response
         $response->assertStatus(200)
             ->assertJson([
                 'status' => true,
@@ -81,48 +84,48 @@ class LockerControllerTest extends TestCase
 
     public function test_non_admin_cannot_access_locker_endpoints(): void
     {
-        // Erstelle einen normalen Benutzer
+        // Create a regular user
         $user = User::factory()->create();
 
-        // Versuche, die Locker-Liste abzurufen
+        // Try to get the locker list
         $response = $this->actingAs($user)->getJson(route('admin.lockers.index'));
         $response->assertStatus(403);
 
-        // Versuche, einen Locker zu öffnen
+        // Try to open a locker
         $response = $this->actingAs($user)->postJson(route('admin.lockers.open', ['lockerId' => 'A-01']));
         $response->assertStatus(403);
     }
-
+    
     public function test_admin_cannot_open_nonexistent_locker(): void
     {
-        // Erstelle einen Admin-Benutzer
+        // Create an admin user
         $admin = User::factory()->create();
         $admin->makeAdmin();
 
-        // Mock der openLocker-Methode, die fehlschlägt
+        // Mock the openLocker method that fails
         $this->lockerService->expects($this->once())
             ->method('openLocker')
             ->with('NICHT-VORHANDEN')
             ->willReturn(false);
 
-        // Führe die Anfrage aus
+        // Execute the request
         $response = $this->actingAs($admin)->postJson(route('admin.lockers.open', ['lockerId' => 'NICHT-VORHANDEN']));
 
-        // Überprüfe die Antwort
+        // Check the response
         $response->assertStatus(500)
             ->assertJson([
                 'status' => false,
                 'message' => __('Failed to open locker.'),
             ]);
     }
-
+    
     public function test_admin_can_get_locker_with_different_status(): void
     {
-        // Erstelle einen Admin-Benutzer
+        // Create an admin user
         $admin = User::factory()->create();
         $admin->makeAdmin();
 
-        // Mock der Locker-Liste
+        // Mock the locker list
         $lockers = [
             new Locker('A-01', 1, 11, 111),
             new Locker('A-02', 2, 22, 222),
@@ -132,18 +135,18 @@ class LockerControllerTest extends TestCase
             ->method('getLockerList')
             ->willReturn($lockers);
 
-        // Konfiguriere unterschiedliche Status für die Locker
+        // Configure different statuses for the lockers
         $this->lockerService->expects($this->exactly(2))
             ->method('getLockerStatus')
             ->willReturnMap([
-                ['A-01', true],  // Erster Locker ist geöffnet
-                ['A-02', false], // Zweiter Locker ist geschlossen
+                ['A-01', true],  // First locker is open
+                ['A-02', false], // Second locker is closed
             ]);
 
-        // Führe die Anfrage aus
+        // Execute the request
         $response = $this->actingAs($admin)->getJson(route('admin.lockers.index'));
 
-        // Überprüfe die Antwort
+        // Check the response
         $response->assertStatus(200)
             ->assertJson([
                 [
@@ -156,14 +159,14 @@ class LockerControllerTest extends TestCase
                 ],
             ]);
     }
-
+    
     public function test_unauthenticated_user_cannot_access_locker_endpoints(): void
     {
-        // Versuche, die Locker-Liste abzurufen ohne Authentifizierung
+        // Try to get the locker list without authentication
         $response = $this->getJson(route('admin.lockers.index'));
         $response->assertStatus(401); // Unauthenticated
 
-        // Versuche, einen Locker zu öffnen ohne Authentifizierung
+        // Try to open a locker without authentication
         $response = $this->postJson(route('admin.lockers.open', ['lockerId' => 'A-01']));
         $response->assertStatus(401); // Unauthenticated
     }
