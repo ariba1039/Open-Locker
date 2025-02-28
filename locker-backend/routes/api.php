@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AppInfoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LockerController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
+
+// Publicly accessible route for API identification
+Route::get('identify', [AppInfoController::class, 'identify'])->name('api.identify');
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login')->middleware(['throttle:6,1'])->name('auth.login');
