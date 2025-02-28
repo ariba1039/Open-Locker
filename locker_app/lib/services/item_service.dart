@@ -1,5 +1,5 @@
 import 'package:locker_api/api.dart';
-import 'package:locker_app/models/user_service.dart';
+import 'package:locker_app/services/user_service.dart';
 
 class ItemService {
   ItemService({required UserService userService}) : _userService = userService;

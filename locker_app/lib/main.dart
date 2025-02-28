@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locker_app/common/theme.dart';
-import 'package:locker_app/models/item_service.dart';
-import 'package:locker_app/models/user_service.dart';
 import 'package:locker_app/screens/home.dart';
 import 'package:locker_app/screens/login.dart';
 import 'package:locker_app/screens/profile.dart';
+import 'package:locker_app/services/item_service.dart';
+import 'package:locker_app/services/user_service.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -48,7 +48,7 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
-        title: 'Provider Demo',
+        title: 'Open Locker',
         theme: appTheme,
         routerConfig: router(),
       ),

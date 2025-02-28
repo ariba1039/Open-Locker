@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:locker_app/models/user_service.dart';
+import 'package:locker_app/services/user_service.dart';
 import 'package:locker_app/widgets/bottom_nav.dart';
 import 'package:locker_app/widgets/side_nav.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
-                context.read<UserService>().clearUser();
+                context.read<UserService>().logout();
                 context.go('/login');
               },
             ),

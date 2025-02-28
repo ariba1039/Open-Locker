@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:locker_api/api.dart';
-import 'package:locker_app/models/user_service.dart';
 import 'package:locker_app/screens/home.dart';
+import 'package:locker_app/services/user_service.dart';
 import 'package:locker_app/widgets/login_form.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +18,8 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             LoginForm(
-              onSubmit: (TokenResponse response) =>
-                  _onFormSubmitted(context, response),
+              onSubmit: (String email, String password) =>
+                  _onFormSubmitted(context, email, password),
             ),
           ],
         ),
@@ -28,8 +27,9 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  _onFormSubmitted(BuildContext context, TokenResponse response) {
-    Provider.of<UserService>(context, listen: false).setUser(response);
+  _onFormSubmitted(BuildContext context, String email, String password) async {
+    await Provider.of<UserService>(context, listen: false)
+        .login(email, password);
     context.pushReplacement(HomeScreen.route);
   }
 }

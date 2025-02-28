@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:locker_api/api.dart';
-import 'package:locker_app/models/item_service.dart';
+import 'package:locker_app/services/item_service.dart';
 import 'package:locker_app/widgets/no_items_borrowed.dart';
 import 'package:provider/provider.dart';
 

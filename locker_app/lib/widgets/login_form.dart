@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:locker_api/api.dart';
 
 class LoginForm extends StatefulWidget {
-  final void Function(TokenResponse tokenResponse) onSubmit;
+  final void Function(String email, String password) onSubmit;
 
   const LoginForm({
     super.key,
@@ -76,12 +75,7 @@ class _LoginFormState extends State<LoginForm> {
     if (_formKey.currentState!.validate()) {
       final email = _emailController.text;
       final password = _passwordController.text;
-      var authLoginRequest = AuthLoginRequest(email: email, password: password);
-      final tokenResponse = await AuthApi().authLogin(authLoginRequest);
-
-      if (tokenResponse != null) {
-        widget.onSubmit(tokenResponse);
-      }
+      widget.onSubmit(email, password);
     }
   }
 }
