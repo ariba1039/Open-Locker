@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:locker_app/models/auth_state.dart';
+import 'package:locker_app/models/user_service.dart';
 import 'package:locker_app/widgets/bottom_nav.dart';
 import 'package:locker_app/widgets/side_nav.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+  static const route = '/profile';
 
   @override
   Widget build(BuildContext context) {
     final useSideNavRail = MediaQuery.sizeOf(context).width >= 600;
-    final name = context.watch<AuthState>().userName;
+    final name = context.watch<UserService>().user;
     return Scaffold(
         appBar: AppBar(
           title: Text('Profile'),
@@ -20,7 +21,7 @@ class ProfileScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.logout),
               onPressed: () {
-                context.read<AuthState>().logout();
+                context.read<UserService>().clearUser();
                 context.go('/login');
               },
             ),
@@ -37,6 +38,10 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: useSideNavRail ? null : const BottomNav());
+        bottomNavigationBar: useSideNavRail
+            ? null
+            : const BottomNav(
+                selectedIndex: 1,
+              ));
   }
 }

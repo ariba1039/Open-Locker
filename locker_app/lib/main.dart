@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locker_app/common/theme.dart';
+import 'package:locker_app/models/item_service.dart';
+import 'package:locker_app/models/user_service.dart';
 import 'package:locker_app/screens/home.dart';
 import 'package:locker_app/screens/login.dart';
 import 'package:locker_app/screens/profile.dart';
 import 'package:provider/provider.dart';
-
-import 'models/auth_state.dart';
 
 void main() {
   runApp(const MainApp());
@@ -28,17 +28,7 @@ GoRouter router() {
           path: '/profile', builder: (context, state) => const ProfileScreen()),
     ],
     redirect: (context, state) async {
-      final isAuthenticated = context.read<AuthState>().isAuthenticated;
-      if (!isAuthenticated) {
-        try {
-          await context.read<AuthState>().loadUser();
-          return state.matchedLocation != '/login'
-              ? state.matchedLocation
-              : '/home';
-        } catch (e) {
-          return '/login';
-        }
-      }
+      final isAuthenticated = context.read<UserService>().isAuthenticated;
       if (!isAuthenticated) return '/login';
       return state.matchedLocation;
     },
@@ -52,7 +42,10 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthState()),
+        Provider(create: (_) => UserService()),
+        ProxyProvider<UserService, ItemService>(
+          update: (_, userService, __) => ItemService(userService: userService),
+        ),
       ],
       child: MaterialApp.router(
         title: 'Provider Demo',

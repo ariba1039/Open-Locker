@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:locker_app/widgets/bottom_nav.dart';
-import 'package:locker_app/widgets/item_list.dart';
+import 'package:locker_app/widgets/borrowed_items.dart';
 import 'package:locker_app/widgets/side_nav.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+  static const route = '/home';
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +22,14 @@ class HomeScreen extends StatelessWidget {
                 selectedIndex: 0,
               ),
             Expanded(
-              child: const ItemList(),
+              child: const BorrowedItems(),
             ),
           ],
         ),
-        bottomNavigationBar: useSideNavRail ? null : const BottomNav());
+        bottomNavigationBar: useSideNavRail
+            ? null
+            : const BottomNav(
+                selectedIndex: 0,
+              ));
   }
 }

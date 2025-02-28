@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class BottomNav extends StatelessWidget {
-  const BottomNav({super.key});
+  final int selectedIndex;
+  const BottomNav({super.key, required this.selectedIndex});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class BottomNav extends StatelessWidget {
           context.go('/profile');
         }
       },
+      currentIndex: selectedIndex,
     );
   }
 }
