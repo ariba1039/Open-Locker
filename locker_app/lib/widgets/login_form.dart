@@ -37,6 +37,9 @@ class _LoginFormState extends State<LoginForm> {
               labelText: 'Email',
             ),
             keyboardType: TextInputType.emailAddress,
+            onFieldSubmitted: (_) {
+              FocusScope.of(context).nextFocus();
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
@@ -50,6 +53,9 @@ class _LoginFormState extends State<LoginForm> {
               labelText: 'Password',
             ),
             obscureText: true,
+            onFieldSubmitted: (_) {
+              _submitForm();
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your password';
@@ -58,24 +64,24 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           ElevatedButton(
-            onPressed: () async {
-              if (_formKey.currentState!.validate()) {
-                final email = _emailController.text;
-                final password = _passwordController.text;
-                var authLoginRequest =
-                    AuthLoginRequest(email: email, password: password);
-                final tokenResponse =
-                    await AuthApi().authLogin(authLoginRequest);
-
-                if (tokenResponse != null) {
-                  widget.onSubmit(tokenResponse);
-                }
-              }
-            },
+            onPressed: _submitForm,
             child: const Text('Login'),
           ),
         ],
       ),
     );
+  }
+
+  void _submitForm() async {
+    if (_formKey.currentState!.validate()) {
+      final email = _emailController.text;
+      final password = _passwordController.text;
+      var authLoginRequest = AuthLoginRequest(email: email, password: password);
+      final tokenResponse = await AuthApi().authLogin(authLoginRequest);
+
+      if (tokenResponse != null) {
+        widget.onSubmit(tokenResponse);
+      }
+    }
   }
 }
