@@ -15,6 +15,66 @@ class AuthApi {
 
   final ApiClient apiClient;
 
+  /// Register
+  ///
+  /// Note: This method returns the HTTP [Response].
+  ///
+  /// Parameters:
+  ///
+  /// * [AdminUsersRegisterRequest] adminUsersRegisterRequest (required):
+  Future<Response> adminUsersRegisterWithHttpInfo(
+    AdminUsersRegisterRequest adminUsersRegisterRequest,
+  ) async {
+    // ignore: prefer_const_declarations
+    final path = r'/admin/users/register';
+
+    // ignore: prefer_final_locals
+    Object? postBody = adminUsersRegisterRequest;
+
+    final queryParams = <QueryParam>[];
+    final headerParams = <String, String>{};
+    final formParams = <String, String>{};
+
+    const contentTypes = <String>['application/json'];
+
+    return apiClient.invokeAPI(
+      path,
+      'POST',
+      queryParams,
+      postBody,
+      headerParams,
+      formParams,
+      contentTypes.isEmpty ? null : contentTypes.first,
+    );
+  }
+
+  /// Register
+  ///
+  /// Parameters:
+  ///
+  /// * [AdminUsersRegisterRequest] adminUsersRegisterRequest (required):
+  Future<TokenResponse?> adminUsersRegister(
+    AdminUsersRegisterRequest adminUsersRegisterRequest,
+  ) async {
+    final response = await adminUsersRegisterWithHttpInfo(
+      adminUsersRegisterRequest,
+    );
+    if (response.statusCode >= HttpStatus.badRequest) {
+      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
+    }
+    // When a remote server returns no body with a status of 204, we shall not decode it.
+    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
+    // FormatException when trying to decode an empty string.
+    if (response.body.isNotEmpty &&
+        response.statusCode != HttpStatus.noContent) {
+      return await apiClient.deserializeAsync(
+        await _decodeBodyBytes(response),
+        'TokenResponse',
+      ) as TokenResponse;
+    }
+    return null;
+  }
+
   /// Login
   ///
   /// Note: This method returns the HTTP [Response].
@@ -103,7 +163,7 @@ class AuthApi {
   }
 
   /// Logout
-  Future<PasswordEmail200Response?> authLogout() async {
+  Future<AdminUsersMakeAdmin400Response?> authLogout() async {
     final response = await authLogoutWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -115,68 +175,8 @@ class AuthApi {
         response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(
         await _decodeBodyBytes(response),
-        'PasswordEmail200Response',
-      ) as PasswordEmail200Response;
-    }
-    return null;
-  }
-
-  /// Register
-  ///
-  /// Note: This method returns the HTTP [Response].
-  ///
-  /// Parameters:
-  ///
-  /// * [AuthRegisterRequest] authRegisterRequest (required):
-  Future<Response> authRegisterWithHttpInfo(
-    AuthRegisterRequest authRegisterRequest,
-  ) async {
-    // ignore: prefer_const_declarations
-    final path = r'/register';
-
-    // ignore: prefer_final_locals
-    Object? postBody = authRegisterRequest;
-
-    final queryParams = <QueryParam>[];
-    final headerParams = <String, String>{};
-    final formParams = <String, String>{};
-
-    const contentTypes = <String>['application/json'];
-
-    return apiClient.invokeAPI(
-      path,
-      'POST',
-      queryParams,
-      postBody,
-      headerParams,
-      formParams,
-      contentTypes.isEmpty ? null : contentTypes.first,
-    );
-  }
-
-  /// Register
-  ///
-  /// Parameters:
-  ///
-  /// * [AuthRegisterRequest] authRegisterRequest (required):
-  Future<TokenResponse?> authRegister(
-    AuthRegisterRequest authRegisterRequest,
-  ) async {
-    final response = await authRegisterWithHttpInfo(
-      authRegisterRequest,
-    );
-    if (response.statusCode >= HttpStatus.badRequest) {
-      throw ApiException(response.statusCode, await _decodeBodyBytes(response));
-    }
-    // When a remote server returns no body with a status of 204, we shall not decode it.
-    // At the time of writing this, `dart:convert` will throw an "Unexpected end of input"
-    // FormatException when trying to decode an empty string.
-    if (response.body.isNotEmpty &&
-        response.statusCode != HttpStatus.noContent) {
-      return await apiClient.deserializeAsync(
-        await _decodeBodyBytes(response),
-        'TokenResponse',
-      ) as TokenResponse;
+        'AdminUsersMakeAdmin400Response',
+      ) as AdminUsersMakeAdmin400Response;
     }
     return null;
   }
@@ -265,7 +265,7 @@ class AuthApi {
   /// Parameters:
   ///
   /// * [PasswordEmailRequest] passwordEmailRequest (required):
-  Future<PasswordEmail200Response?> passwordEmail(
+  Future<AdminUsersMakeAdmin400Response?> passwordEmail(
     PasswordEmailRequest passwordEmailRequest,
   ) async {
     final response = await passwordEmailWithHttpInfo(
@@ -281,8 +281,8 @@ class AuthApi {
         response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(
         await _decodeBodyBytes(response),
-        'PasswordEmail200Response',
-      ) as PasswordEmail200Response;
+        'AdminUsersMakeAdmin400Response',
+      ) as AdminUsersMakeAdmin400Response;
     }
     return null;
   }
@@ -325,7 +325,7 @@ class AuthApi {
   /// Parameters:
   ///
   /// * [PasswordStoreRequest] passwordStoreRequest (required):
-  Future<PasswordEmail200Response?> passwordStore(
+  Future<AdminUsersMakeAdmin400Response?> passwordStore(
     PasswordStoreRequest passwordStoreRequest,
   ) async {
     final response = await passwordStoreWithHttpInfo(
@@ -341,8 +341,8 @@ class AuthApi {
         response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(
         await _decodeBodyBytes(response),
-        'PasswordEmail200Response',
-      ) as PasswordEmail200Response;
+        'AdminUsersMakeAdmin400Response',
+      ) as AdminUsersMakeAdmin400Response;
     }
     return null;
   }
@@ -375,7 +375,7 @@ class AuthApi {
   }
 
   /// Send Email Verification Notification
-  Future<PasswordEmail200Response?> verificationSend() async {
+  Future<AdminUsersMakeAdmin400Response?> verificationSend() async {
     final response = await verificationSendWithHttpInfo();
     if (response.statusCode >= HttpStatus.badRequest) {
       throw ApiException(response.statusCode, await _decodeBodyBytes(response));
@@ -387,8 +387,8 @@ class AuthApi {
         response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(
         await _decodeBodyBytes(response),
-        'PasswordEmail200Response',
-      ) as PasswordEmail200Response;
+        'AdminUsersMakeAdmin400Response',
+      ) as AdminUsersMakeAdmin400Response;
     }
     return null;
   }
@@ -438,7 +438,7 @@ class AuthApi {
   /// * [String] id (required):
   ///
   /// * [String] hash (required):
-  Future<PasswordEmail200Response?> verificationVerify(
+  Future<AdminUsersMakeAdmin400Response?> verificationVerify(
     String id,
     String hash,
   ) async {
@@ -456,8 +456,8 @@ class AuthApi {
         response.statusCode != HttpStatus.noContent) {
       return await apiClient.deserializeAsync(
         await _decodeBodyBytes(response),
-        'PasswordEmail200Response',
-      ) as PasswordEmail200Response;
+        'AdminUsersMakeAdmin400Response',
+      ) as AdminUsersMakeAdmin400Response;
     }
     return null;
   }

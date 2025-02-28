@@ -1,4 +1,4 @@
-# locker_api.model.ItemLoan
+# locker_api.model.AdminStatistics200Response
 
 ## Load the model package
 ```dart
@@ -8,11 +8,7 @@ import 'package:locker_api/api.dart';
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **int** |  | 
-**item** | [**Item**](Item.md) |  | 
-**userId** | **int** |  | 
-**borrowedAt** | [**Object**](.md) |  | 
-**returnedAt** | [**DateTime**](DateTime.md) |  | 
+**statistics** | [**AdminStatistics200ResponseStatistics**](AdminStatistics200ResponseStatistics.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

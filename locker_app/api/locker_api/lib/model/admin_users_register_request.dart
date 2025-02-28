@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class AuthRegisterRequest {
-  /// Returns a new [AuthRegisterRequest] instance.
-  AuthRegisterRequest({
+class AdminUsersRegisterRequest {
+  /// Returns a new [AdminUsersRegisterRequest] instance.
+  AdminUsersRegisterRequest({
     required this.name,
     required this.email,
     required this.password,
@@ -30,7 +30,7 @@ class AuthRegisterRequest {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthRegisterRequest &&
+      other is AdminUsersRegisterRequest &&
           other.name == name &&
           other.email == email &&
           other.password == password &&
@@ -46,7 +46,7 @@ class AuthRegisterRequest {
 
   @override
   String toString() =>
-      'AuthRegisterRequest[name=$name, email=$email, password=$password, passwordConfirmation=$passwordConfirmation]';
+      'AdminUsersRegisterRequest[name=$name, email=$email, password=$password, passwordConfirmation=$passwordConfirmation]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -57,10 +57,10 @@ class AuthRegisterRequest {
     return json;
   }
 
-  /// Returns a new [AuthRegisterRequest] instance and imports its values from
+  /// Returns a new [AdminUsersRegisterRequest] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AuthRegisterRequest? fromJson(dynamic value) {
+  static AdminUsersRegisterRequest? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -70,14 +70,14 @@ class AuthRegisterRequest {
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key),
-              'Required key "AuthRegisterRequest[$key]" is missing from JSON.');
+              'Required key "AdminUsersRegisterRequest[$key]" is missing from JSON.');
           assert(json[key] != null,
-              'Required key "AuthRegisterRequest[$key]" has a null value in JSON.');
+              'Required key "AdminUsersRegisterRequest[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AuthRegisterRequest(
+      return AdminUsersRegisterRequest(
         name: mapValueOfType<String>(json, r'name')!,
         email: mapValueOfType<String>(json, r'email')!,
         password: mapValueOfType<String>(json, r'password')!,
@@ -88,14 +88,14 @@ class AuthRegisterRequest {
     return null;
   }
 
-  static List<AuthRegisterRequest> listFromJson(
+  static List<AdminUsersRegisterRequest> listFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final result = <AuthRegisterRequest>[];
+    final result = <AdminUsersRegisterRequest>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AuthRegisterRequest.fromJson(row);
+        final value = AdminUsersRegisterRequest.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -104,12 +104,12 @@ class AuthRegisterRequest {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AuthRegisterRequest> mapFromJson(dynamic json) {
-    final map = <String, AuthRegisterRequest>{};
+  static Map<String, AdminUsersRegisterRequest> mapFromJson(dynamic json) {
+    final map = <String, AdminUsersRegisterRequest>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AuthRegisterRequest.fromJson(entry.value);
+        final value = AdminUsersRegisterRequest.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -118,17 +118,17 @@ class AuthRegisterRequest {
     return map;
   }
 
-  // maps a json object with a list of AuthRegisterRequest-objects as value to a dart map
-  static Map<String, List<AuthRegisterRequest>> mapListFromJson(
+  // maps a json object with a list of AdminUsersRegisterRequest-objects as value to a dart map
+  static Map<String, List<AdminUsersRegisterRequest>> mapListFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final map = <String, List<AuthRegisterRequest>>{};
+    final map = <String, List<AdminUsersRegisterRequest>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AuthRegisterRequest.listFromJson(
+        map[entry.key] = AdminUsersRegisterRequest.listFromJson(
           entry.value,
           growable: growable,
         );

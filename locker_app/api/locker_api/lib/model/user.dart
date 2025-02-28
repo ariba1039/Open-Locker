@@ -17,6 +17,7 @@ class User {
     required this.name,
     required this.email,
     required this.emailVerifiedAt,
+    required this.isAdmin,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -28,6 +29,8 @@ class User {
   String email;
 
   DateTime? emailVerifiedAt;
+
+  bool isAdmin;
 
   DateTime? createdAt;
 
@@ -41,6 +44,7 @@ class User {
           other.name == name &&
           other.email == email &&
           other.emailVerifiedAt == emailVerifiedAt &&
+          other.isAdmin == isAdmin &&
           other.createdAt == createdAt &&
           other.updatedAt == updatedAt;
 
@@ -51,12 +55,13 @@ class User {
       (name.hashCode) +
       (email.hashCode) +
       (emailVerifiedAt == null ? 0 : emailVerifiedAt!.hashCode) +
+      (isAdmin.hashCode) +
       (createdAt == null ? 0 : createdAt!.hashCode) +
       (updatedAt == null ? 0 : updatedAt!.hashCode);
 
   @override
   String toString() =>
-      'User[id=$id, name=$name, email=$email, emailVerifiedAt=$emailVerifiedAt, createdAt=$createdAt, updatedAt=$updatedAt]';
+      'User[id=$id, name=$name, email=$email, emailVerifiedAt=$emailVerifiedAt, isAdmin=$isAdmin, createdAt=$createdAt, updatedAt=$updatedAt]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -69,6 +74,7 @@ class User {
     } else {
       json[r'email_verified_at'] = null;
     }
+    json[r'is_admin'] = this.isAdmin;
     if (this.createdAt != null) {
       json[r'created_at'] = this.createdAt!.toUtc().toIso8601String();
     } else {
@@ -107,6 +113,7 @@ class User {
         name: mapValueOfType<String>(json, r'name')!,
         email: mapValueOfType<String>(json, r'email')!,
         emailVerifiedAt: mapDateTime(json, r'email_verified_at', r''),
+        isAdmin: mapValueOfType<bool>(json, r'is_admin')!,
         createdAt: mapDateTime(json, r'created_at', r''),
         updatedAt: mapDateTime(json, r'updated_at', r''),
       );
@@ -169,6 +176,7 @@ class User {
     'name',
     'email',
     'email_verified_at',
+    'is_admin',
     'created_at',
     'updated_at',
   };

@@ -11,11 +11,11 @@
 import 'package:locker_api/api.dart';
 import 'package:test/test.dart';
 
-// tests for PasswordEmail200Response
+// tests for AdminUsersMakeAdmin400Response
 void main() {
-  // final instance = PasswordEmail200Response();
+  // final instance = AdminUsersMakeAdmin400Response();
 
-  group('test PasswordEmail200Response', () {
+  group('test AdminUsersMakeAdmin400Response', () {
     // String message
     test('to test the property `message`', () async {
       // TODO

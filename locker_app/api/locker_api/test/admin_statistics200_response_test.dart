@@ -11,23 +11,13 @@
 import 'package:locker_api/api.dart';
 import 'package:test/test.dart';
 
-// tests for TokenResponse
+// tests for AdminStatistics200Response
 void main() {
-  // final instance = TokenResponse();
+  // final instance = AdminStatistics200Response();
 
-  group('test TokenResponse', () {
-    // String token
-    test('to test the property `token`', () async {
-      // TODO
-    });
-
-    // String name
-    test('to test the property `name`', () async {
-      // TODO
-    });
-
-    // bool verified
-    test('to test the property `verified`', () async {
+  group('test AdminStatistics200Response', () {
+    // AdminStatistics200ResponseStatistics statistics
+    test('to test the property `statistics`', () async {
       // TODO
     });
   });

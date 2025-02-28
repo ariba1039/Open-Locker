@@ -16,7 +16,7 @@ void main() {
   // final instance = ItemLoan();
 
   group('test ItemLoan', () {
-    // String id
+    // int id
     test('to test the property `id`', () async {
       // TODO
     });
@@ -26,17 +26,17 @@ void main() {
       // TODO
     });
 
-    // String userId
+    // int userId
     test('to test the property `userId`', () async {
       // TODO
     });
 
-    // String borrowedAt
+    // Object borrowedAt
     test('to test the property `borrowedAt`', () async {
       // TODO
     });
 
-    // String returnedAt
+    // DateTime returnedAt
     test('to test the property `returnedAt`', () async {
       // TODO
     });

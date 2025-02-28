@@ -12,6 +12,7 @@ Name | Type | Description | Notes
 **name** | **String** |  | 
 **email** | **String** |  | 
 **emailVerifiedAt** | [**DateTime**](DateTime.md) |  | 
+**isAdmin** | **bool** |  | 
 **createdAt** | [**DateTime**](DateTime.md) |  | 
 **updatedAt** | [**DateTime**](DateTime.md) |  | 
 

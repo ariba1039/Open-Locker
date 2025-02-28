@@ -16,6 +16,13 @@ void main() {
   // final instance = AuthApi();
 
   group('tests for AuthApi', () {
+    // Register
+    //
+    //Future<TokenResponse> adminUsersRegister(AdminUsersRegisterRequest adminUsersRegisterRequest) async
+    test('test adminUsersRegister', () async {
+      // TODO
+    });
+
     // Login
     //
     //Future<TokenResponse> authLogin(AuthLoginRequest authLoginRequest) async
@@ -25,15 +32,8 @@ void main() {
 
     // Logout
     //
-    //Future<AuthLogout200Response> authLogout() async
+    //Future<AdminUsersMakeAdmin400Response> authLogout() async
     test('test authLogout', () async {
-      // TODO
-    });
-
-    // Register
-    //
-    //Future<TokenResponse> authRegister(AuthRegisterRequest authRegisterRequest) async
-    test('test authRegister', () async {
       // TODO
     });
 
@@ -41,6 +41,34 @@ void main() {
     //
     //Future<User> authUser() async
     test('test authUser', () async {
+      // TODO
+    });
+
+    // Send Password E-Mail
+    //
+    //Future<AdminUsersMakeAdmin400Response> passwordEmail(PasswordEmailRequest passwordEmailRequest) async
+    test('test passwordEmail', () async {
+      // TODO
+    });
+
+    // Reset Password with Token
+    //
+    //Future<AdminUsersMakeAdmin400Response> passwordStore(PasswordStoreRequest passwordStoreRequest) async
+    test('test passwordStore', () async {
+      // TODO
+    });
+
+    // Send Email Verification Notification
+    //
+    //Future<AdminUsersMakeAdmin400Response> verificationSend() async
+    test('test verificationSend', () async {
+      // TODO
+    });
+
+    // Verify Email Address
+    //
+    //Future<AdminUsersMakeAdmin400Response> verificationVerify(String id, String hash) async
+    test('test verificationVerify', () async {
       // TODO
     });
   });

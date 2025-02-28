@@ -229,18 +229,26 @@ class ApiClient {
           return valueString == 'true' || valueString == '1';
         case 'DateTime':
           return value is DateTime ? value : DateTime.tryParse(value);
+        case 'AdminStatistics200Response':
+          return AdminStatistics200Response.fromJson(value);
+        case 'AdminStatistics200ResponseStatistics':
+          return AdminStatistics200ResponseStatistics.fromJson(value);
+        case 'AdminUsersMakeAdmin200Response':
+          return AdminUsersMakeAdmin200Response.fromJson(value);
+        case 'AdminUsersMakeAdmin400Response':
+          return AdminUsersMakeAdmin400Response.fromJson(value);
+        case 'AdminUsersRegisterRequest':
+          return AdminUsersRegisterRequest.fromJson(value);
         case 'AuthLoginRequest':
           return AuthLoginRequest.fromJson(value);
-        case 'AuthRegisterRequest':
-          return AuthRegisterRequest.fromJson(value);
         case 'Item':
           return Item.fromJson(value);
         case 'ItemLoan':
           return ItemLoan.fromJson(value);
         case 'ItemsBorrow200Response':
           return ItemsBorrow200Response.fromJson(value);
-        case 'PasswordEmail200Response':
-          return PasswordEmail200Response.fromJson(value);
+        case 'Locker':
+          return Locker.fromJson(value);
         case 'PasswordEmailRequest':
           return PasswordEmailRequest.fromJson(value);
         case 'PasswordStoreRequest':

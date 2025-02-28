@@ -16,10 +16,38 @@ void main() {
   // final instance = ItemApi();
 
   group('tests for ItemApi', () {
+    // Borrow a Item
+    //
+    //Future<ItemsBorrow200Response> itemsBorrow(int item) async
+    test('test itemsBorrow', () async {
+      // TODO
+    });
+
+    // Get all Items from User
+    //
+    //Future<List<Item>> itemsBorrowed() async
+    test('test itemsBorrowed', () async {
+      // TODO
+    });
+
     // Get all Items
     //
-    //Future<List<Item>> itemIndex() async
-    test('test itemIndex', () async {
+    //Future<List<Item>> itemsIndex() async
+    test('test itemsIndex', () async {
+      // TODO
+    });
+
+    // Get loan history for the current user
+    //
+    //Future<List<ItemLoan>> itemsLoanHistory() async
+    test('test itemsLoanHistory', () async {
+      // TODO
+    });
+
+    // Returns a Item
+    //
+    //Future<ItemsBorrow200Response> itemsReturn(int item) async
+    test('test itemsReturn', () async {
       // TODO
     });
   });

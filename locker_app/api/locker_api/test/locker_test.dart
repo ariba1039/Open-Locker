@@ -11,13 +11,18 @@
 import 'package:locker_api/api.dart';
 import 'package:test/test.dart';
 
-// tests for AuthLogout200Response
+// tests for Locker
 void main() {
-  // final instance = AuthLogout200Response();
+  // final instance = Locker();
 
-  group('test AuthLogout200Response', () {
-    // String message
-    test('to test the property `message`', () async {
+  group('test Locker', () {
+    // String id
+    test('to test the property `id`', () async {
+      // TODO
+    });
+
+    // String isOpen
+    test('to test the property `isOpen`', () async {
       // TODO
     });
   });

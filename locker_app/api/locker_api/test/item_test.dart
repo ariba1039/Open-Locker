@@ -36,6 +36,16 @@ void main() {
       // TODO
     });
 
+    // String lockerId
+    test('to test the property `lockerId`', () async {
+      // TODO
+    });
+
+    // bool borrowed
+    test('to test the property `borrowed`', () async {
+      // TODO
+    });
+
     // DateTime createdAt
     test('to test the property `createdAt`', () async {
       // TODO

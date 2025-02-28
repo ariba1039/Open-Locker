@@ -10,37 +10,41 @@
 
 part of openapi.api;
 
-class PasswordEmail200Response {
-  /// Returns a new [PasswordEmail200Response] instance.
-  PasswordEmail200Response({
-    required this.message,
+class Locker {
+  /// Returns a new [Locker] instance.
+  Locker({
+    required this.id,
+    required this.isOpen,
   });
 
-  String message;
+  String id;
+
+  String isOpen;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PasswordEmail200Response && other.message == message;
+      other is Locker && other.id == id && other.isOpen == isOpen;
 
   @override
   int get hashCode =>
       // ignore: unnecessary_parenthesis
-      (message.hashCode);
+      (id.hashCode) + (isOpen.hashCode);
 
   @override
-  String toString() => 'PasswordEmail200Response[message=$message]';
+  String toString() => 'Locker[id=$id, isOpen=$isOpen]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
-    json[r'message'] = this.message;
+    json[r'id'] = this.id;
+    json[r'is_open'] = this.isOpen;
     return json;
   }
 
-  /// Returns a new [PasswordEmail200Response] instance and imports its values from
+  /// Returns a new [Locker] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static PasswordEmail200Response? fromJson(dynamic value) {
+  static Locker? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -50,28 +54,29 @@ class PasswordEmail200Response {
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key),
-              'Required key "PasswordEmail200Response[$key]" is missing from JSON.');
+              'Required key "Locker[$key]" is missing from JSON.');
           assert(json[key] != null,
-              'Required key "PasswordEmail200Response[$key]" has a null value in JSON.');
+              'Required key "Locker[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return PasswordEmail200Response(
-        message: mapValueOfType<String>(json, r'message')!,
+      return Locker(
+        id: mapValueOfType<String>(json, r'id')!,
+        isOpen: mapValueOfType<String>(json, r'is_open')!,
       );
     }
     return null;
   }
 
-  static List<PasswordEmail200Response> listFromJson(
+  static List<Locker> listFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final result = <PasswordEmail200Response>[];
+    final result = <Locker>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = PasswordEmail200Response.fromJson(row);
+        final value = Locker.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -80,12 +85,12 @@ class PasswordEmail200Response {
     return result.toList(growable: growable);
   }
 
-  static Map<String, PasswordEmail200Response> mapFromJson(dynamic json) {
-    final map = <String, PasswordEmail200Response>{};
+  static Map<String, Locker> mapFromJson(dynamic json) {
+    final map = <String, Locker>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = PasswordEmail200Response.fromJson(entry.value);
+        final value = Locker.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -94,17 +99,17 @@ class PasswordEmail200Response {
     return map;
   }
 
-  // maps a json object with a list of PasswordEmail200Response-objects as value to a dart map
-  static Map<String, List<PasswordEmail200Response>> mapListFromJson(
+  // maps a json object with a list of Locker-objects as value to a dart map
+  static Map<String, List<Locker>> mapListFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final map = <String, List<PasswordEmail200Response>>{};
+    final map = <String, List<Locker>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = PasswordEmail200Response.listFromJson(
+        map[entry.key] = Locker.listFromJson(
           entry.value,
           growable: growable,
         );
@@ -115,6 +120,7 @@ class PasswordEmail200Response {
 
   /// The list of required keys that must be present in a JSON.
   static const requiredKeys = <String>{
-    'message',
+    'id',
+    'is_open',
   };
 }

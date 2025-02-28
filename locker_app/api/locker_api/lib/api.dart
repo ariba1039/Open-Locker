@@ -28,15 +28,21 @@ part 'auth/oauth.dart';
 part 'auth/http_basic_auth.dart';
 part 'auth/http_bearer_auth.dart';
 
+part 'api/admin_api.dart';
 part 'api/auth_api.dart';
 part 'api/item_api.dart';
+part 'api/locker_api.dart';
 
+part 'model/admin_statistics200_response.dart';
+part 'model/admin_statistics200_response_statistics.dart';
+part 'model/admin_users_make_admin200_response.dart';
+part 'model/admin_users_make_admin400_response.dart';
+part 'model/admin_users_register_request.dart';
 part 'model/auth_login_request.dart';
-part 'model/auth_register_request.dart';
 part 'model/item.dart';
 part 'model/item_loan.dart';
 part 'model/items_borrow200_response.dart';
-part 'model/password_email200_response.dart';
+part 'model/locker.dart';
 part 'model/password_email_request.dart';
 part 'model/password_store_request.dart';
 part 'model/token_response.dart';

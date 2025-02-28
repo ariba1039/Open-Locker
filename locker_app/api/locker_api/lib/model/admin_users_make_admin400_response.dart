@@ -10,9 +10,9 @@
 
 part of openapi.api;
 
-class AuthLogout200Response {
-  /// Returns a new [AuthLogout200Response] instance.
-  AuthLogout200Response({
+class AdminUsersMakeAdmin400Response {
+  /// Returns a new [AdminUsersMakeAdmin400Response] instance.
+  AdminUsersMakeAdmin400Response({
     required this.message,
   });
 
@@ -21,7 +21,7 @@ class AuthLogout200Response {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AuthLogout200Response && other.message == message;
+      other is AdminUsersMakeAdmin400Response && other.message == message;
 
   @override
   int get hashCode =>
@@ -29,7 +29,7 @@ class AuthLogout200Response {
       (message.hashCode);
 
   @override
-  String toString() => 'AuthLogout200Response[message=$message]';
+  String toString() => 'AdminUsersMakeAdmin400Response[message=$message]';
 
   Map<String, dynamic> toJson() {
     final json = <String, dynamic>{};
@@ -37,10 +37,10 @@ class AuthLogout200Response {
     return json;
   }
 
-  /// Returns a new [AuthLogout200Response] instance and imports its values from
+  /// Returns a new [AdminUsersMakeAdmin400Response] instance and imports its values from
   /// [value] if it's a [Map], null otherwise.
   // ignore: prefer_constructors_over_static_methods
-  static AuthLogout200Response? fromJson(dynamic value) {
+  static AdminUsersMakeAdmin400Response? fromJson(dynamic value) {
     if (value is Map) {
       final json = value.cast<String, dynamic>();
 
@@ -50,28 +50,28 @@ class AuthLogout200Response {
       assert(() {
         requiredKeys.forEach((key) {
           assert(json.containsKey(key),
-              'Required key "AuthLogout200Response[$key]" is missing from JSON.');
+              'Required key "AdminUsersMakeAdmin400Response[$key]" is missing from JSON.');
           assert(json[key] != null,
-              'Required key "AuthLogout200Response[$key]" has a null value in JSON.');
+              'Required key "AdminUsersMakeAdmin400Response[$key]" has a null value in JSON.');
         });
         return true;
       }());
 
-      return AuthLogout200Response(
+      return AdminUsersMakeAdmin400Response(
         message: mapValueOfType<String>(json, r'message')!,
       );
     }
     return null;
   }
 
-  static List<AuthLogout200Response> listFromJson(
+  static List<AdminUsersMakeAdmin400Response> listFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final result = <AuthLogout200Response>[];
+    final result = <AdminUsersMakeAdmin400Response>[];
     if (json is List && json.isNotEmpty) {
       for (final row in json) {
-        final value = AuthLogout200Response.fromJson(row);
+        final value = AdminUsersMakeAdmin400Response.fromJson(row);
         if (value != null) {
           result.add(value);
         }
@@ -80,12 +80,12 @@ class AuthLogout200Response {
     return result.toList(growable: growable);
   }
 
-  static Map<String, AuthLogout200Response> mapFromJson(dynamic json) {
-    final map = <String, AuthLogout200Response>{};
+  static Map<String, AdminUsersMakeAdmin400Response> mapFromJson(dynamic json) {
+    final map = <String, AdminUsersMakeAdmin400Response>{};
     if (json is Map && json.isNotEmpty) {
       json = json.cast<String, dynamic>(); // ignore: parameter_assignments
       for (final entry in json.entries) {
-        final value = AuthLogout200Response.fromJson(entry.value);
+        final value = AdminUsersMakeAdmin400Response.fromJson(entry.value);
         if (value != null) {
           map[entry.key] = value;
         }
@@ -94,17 +94,17 @@ class AuthLogout200Response {
     return map;
   }
 
-  // maps a json object with a list of AuthLogout200Response-objects as value to a dart map
-  static Map<String, List<AuthLogout200Response>> mapListFromJson(
+  // maps a json object with a list of AdminUsersMakeAdmin400Response-objects as value to a dart map
+  static Map<String, List<AdminUsersMakeAdmin400Response>> mapListFromJson(
     dynamic json, {
     bool growable = false,
   }) {
-    final map = <String, List<AuthLogout200Response>>{};
+    final map = <String, List<AdminUsersMakeAdmin400Response>>{};
     if (json is Map && json.isNotEmpty) {
       // ignore: parameter_assignments
       json = json.cast<String, dynamic>();
       for (final entry in json.entries) {
-        map[entry.key] = AuthLogout200Response.listFromJson(
+        map[entry.key] = AdminUsersMakeAdmin400Response.listFromJson(
           entry.value,
           growable: growable,
         );

@@ -11,23 +11,18 @@
 import 'package:locker_api/api.dart';
 import 'package:test/test.dart';
 
-// tests for TokenResponse
+// tests for AdminUsersMakeAdmin200Response
 void main() {
-  // final instance = TokenResponse();
+  // final instance = AdminUsersMakeAdmin200Response();
 
-  group('test TokenResponse', () {
-    // String token
-    test('to test the property `token`', () async {
+  group('test AdminUsersMakeAdmin200Response', () {
+    // String message
+    test('to test the property `message`', () async {
       // TODO
     });
 
-    // String name
-    test('to test the property `name`', () async {
-      // TODO
-    });
-
-    // bool verified
-    test('to test the property `verified`', () async {
+    // User user
+    test('to test the property `user`', () async {
       // TODO
     });
   });

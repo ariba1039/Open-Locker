@@ -9,15 +9,62 @@ All URIs are relative to *http://localhost/api*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**adminUsersRegister**](AuthApi.md#adminusersregister) | **POST** /admin/users/register | Register
 [**authLogin**](AuthApi.md#authlogin) | **POST** /login | Login
 [**authLogout**](AuthApi.md#authlogout) | **POST** /logout | Logout
-[**authRegister**](AuthApi.md#authregister) | **POST** /register | Register
 [**authUser**](AuthApi.md#authuser) | **GET** /user | Get current User
 [**passwordEmail**](AuthApi.md#passwordemail) | **POST** /password/email | Send Password E-Mail
 [**passwordStore**](AuthApi.md#passwordstore) | **POST** /reset-password | Reset Password with Token
 [**verificationSend**](AuthApi.md#verificationsend) | **POST** /email/verification-notification | Send Email Verification Notification
 [**verificationVerify**](AuthApi.md#verificationverify) | **GET** /verify-email/{id}/{hash} | Verify Email Address
 
+
+# **adminUsersRegister**
+> TokenResponse adminUsersRegister(adminUsersRegisterRequest)
+
+Register
+
+### Example
+```dart
+import 'package:locker_api/api.dart';
+// TODO Configure HTTP Bearer authorization: http
+// Case 1. Use String Token
+//defaultApiClient.getAuthentication<HttpBearerAuth>('http').setAccessToken('YOUR_ACCESS_TOKEN');
+// Case 2. Use Function which generate token.
+// String yourTokenGeneratorFunction() { ... }
+//defaultApiClient.getAuthentication<HttpBearerAuth>('http').setAccessToken(yourTokenGeneratorFunction);
+
+final api_instance = AuthApi();
+final adminUsersRegisterRequest = AdminUsersRegisterRequest(); // AdminUsersRegisterRequest | 
+
+try {
+    final result = api_instance.adminUsersRegister(adminUsersRegisterRequest);
+    print(result);
+} catch (e) {
+    print('Exception when calling AuthApi->adminUsersRegister: $e\n');
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **adminUsersRegisterRequest** | [**AdminUsersRegisterRequest**](AdminUsersRegisterRequest.md)|  | 
+
+### Return type
+
+[**TokenResponse**](TokenResponse.md)
+
+### Authorization
+
+[http](../README.md#http)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **authLogin**
 > TokenResponse authLogin(authLoginRequest)
@@ -67,7 +114,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **authLogout**
-> PasswordEmail200Response authLogout()
+> AdminUsersMakeAdmin400Response authLogout()
 
 Logout
 
@@ -96,7 +143,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**PasswordEmail200Response**](PasswordEmail200Response.md)
+[**AdminUsersMakeAdmin400Response**](AdminUsersMakeAdmin400Response.md)
 
 ### Authorization
 
@@ -105,53 +152,6 @@ This endpoint does not need any parameter.
 ### HTTP request headers
 
  - **Content-Type**: Not defined
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **authRegister**
-> TokenResponse authRegister(authRegisterRequest)
-
-Register
-
-### Example
-```dart
-import 'package:locker_api/api.dart';
-// TODO Configure HTTP Bearer authorization: http
-// Case 1. Use String Token
-//defaultApiClient.getAuthentication<HttpBearerAuth>('http').setAccessToken('YOUR_ACCESS_TOKEN');
-// Case 2. Use Function which generate token.
-// String yourTokenGeneratorFunction() { ... }
-//defaultApiClient.getAuthentication<HttpBearerAuth>('http').setAccessToken(yourTokenGeneratorFunction);
-
-final api_instance = AuthApi();
-final authRegisterRequest = AuthRegisterRequest(); // AuthRegisterRequest | 
-
-try {
-    final result = api_instance.authRegister(authRegisterRequest);
-    print(result);
-} catch (e) {
-    print('Exception when calling AuthApi->authRegister: $e\n');
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **authRegisterRequest** | [**AuthRegisterRequest**](AuthRegisterRequest.md)|  | 
-
-### Return type
-
-[**TokenResponse**](TokenResponse.md)
-
-### Authorization
-
-[http](../README.md#http)
-
-### HTTP request headers
-
- - **Content-Type**: application/json
  - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
@@ -200,7 +200,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **passwordEmail**
-> PasswordEmail200Response passwordEmail(passwordEmailRequest)
+> AdminUsersMakeAdmin400Response passwordEmail(passwordEmailRequest)
 
 Send Password E-Mail
 
@@ -233,7 +233,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PasswordEmail200Response**](PasswordEmail200Response.md)
+[**AdminUsersMakeAdmin400Response**](AdminUsersMakeAdmin400Response.md)
 
 ### Authorization
 
@@ -247,7 +247,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **passwordStore**
-> PasswordEmail200Response passwordStore(passwordStoreRequest)
+> AdminUsersMakeAdmin400Response passwordStore(passwordStoreRequest)
 
 Reset Password with Token
 
@@ -280,7 +280,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PasswordEmail200Response**](PasswordEmail200Response.md)
+[**AdminUsersMakeAdmin400Response**](AdminUsersMakeAdmin400Response.md)
 
 ### Authorization
 
@@ -294,7 +294,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **verificationSend**
-> PasswordEmail200Response verificationSend()
+> AdminUsersMakeAdmin400Response verificationSend()
 
 Send Email Verification Notification
 
@@ -323,7 +323,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**PasswordEmail200Response**](PasswordEmail200Response.md)
+[**AdminUsersMakeAdmin400Response**](AdminUsersMakeAdmin400Response.md)
 
 ### Authorization
 
@@ -337,7 +337,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **verificationVerify**
-> PasswordEmail200Response verificationVerify(id, hash)
+> AdminUsersMakeAdmin400Response verificationVerify(id, hash)
 
 Verify Email Address
 
@@ -372,7 +372,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PasswordEmail200Response**](PasswordEmail200Response.md)
+[**AdminUsersMakeAdmin400Response**](AdminUsersMakeAdmin400Response.md)
 
 ### Authorization
 

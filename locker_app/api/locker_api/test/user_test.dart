@@ -36,6 +36,11 @@ void main() {
       // TODO
     });
 
+    // bool isAdmin
+    test('to test the property `isAdmin`', () async {
+      // TODO
+    });
+
     // DateTime createdAt
     test('to test the property `createdAt`', () async {
       // TODO

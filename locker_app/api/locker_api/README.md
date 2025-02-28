@@ -47,14 +47,13 @@ import 'package:locker_api/api.dart';
 // String yourTokenGeneratorFunction() { ... }
 //defaultApiClient.getAuthentication<HttpBearerAuth>('http').setAccessToken(yourTokenGeneratorFunction);
 
-final api_instance = AuthApi();
-final authLoginRequest = AuthLoginRequest(); // AuthLoginRequest | 
+final api_instance = AdminApi();
 
 try {
-    final result = api_instance.authLogin(authLoginRequest);
+    final result = api_instance.adminStatistics();
     print(result);
 } catch (e) {
-    print('Exception when calling AuthApi->authLogin: $e\n');
+    print('Exception when calling AdminApi->adminStatistics: $e\n');
 }
 
 ```
@@ -65,9 +64,13 @@ All URIs are relative to *http://localhost/api*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*AdminApi* | [**adminStatistics**](doc//AdminApi.md#adminstatistics) | **GET** /admin/statistics | Returns statistics about the system
+*AdminApi* | [**adminUsersIndex**](doc//AdminApi.md#adminusersindex) | **GET** /admin/users | List of alle users
+*AdminApi* | [**adminUsersMakeAdmin**](doc//AdminApi.md#adminusersmakeadmin) | **POST** /admin/users/{user}/make-admin | Macht einen Benutzer zum Administrator
+*AdminApi* | [**adminUsersRemoveAdmin**](doc//AdminApi.md#adminusersremoveadmin) | **POST** /admin/users/{user}/remove-admin | Removes administrator rights from a user
+*AuthApi* | [**adminUsersRegister**](doc//AuthApi.md#adminusersregister) | **POST** /admin/users/register | Register
 *AuthApi* | [**authLogin**](doc//AuthApi.md#authlogin) | **POST** /login | Login
 *AuthApi* | [**authLogout**](doc//AuthApi.md#authlogout) | **POST** /logout | Logout
-*AuthApi* | [**authRegister**](doc//AuthApi.md#authregister) | **POST** /register | Register
 *AuthApi* | [**authUser**](doc//AuthApi.md#authuser) | **GET** /user | Get current User
 *AuthApi* | [**passwordEmail**](doc//AuthApi.md#passwordemail) | **POST** /password/email | Send Password E-Mail
 *AuthApi* | [**passwordStore**](doc//AuthApi.md#passwordstore) | **POST** /reset-password | Reset Password with Token
@@ -78,16 +81,22 @@ Class | Method | HTTP request | Description
 *ItemApi* | [**itemsIndex**](doc//ItemApi.md#itemsindex) | **GET** /items | Get all Items
 *ItemApi* | [**itemsLoanHistory**](doc//ItemApi.md#itemsloanhistory) | **GET** /items/loan-history | Get loan history for the current user
 *ItemApi* | [**itemsReturn**](doc//ItemApi.md#itemsreturn) | **POST** /items/{item}/return | Returns a Item
+*LockerApi* | [**adminLockersIndex**](doc//LockerApi.md#adminlockersindex) | **GET** /admin/lockers | Returns a list of all available lockers
+*LockerApi* | [**adminLockersOpen**](doc//LockerApi.md#adminlockersopen) | **POST** /admin/lockers/{lockerId}/open | Manually opens a locker
 
 
 ## Documentation For Models
 
+ - [AdminStatistics200Response](doc//AdminStatistics200Response.md)
+ - [AdminStatistics200ResponseStatistics](doc//AdminStatistics200ResponseStatistics.md)
+ - [AdminUsersMakeAdmin200Response](doc//AdminUsersMakeAdmin200Response.md)
+ - [AdminUsersMakeAdmin400Response](doc//AdminUsersMakeAdmin400Response.md)
+ - [AdminUsersRegisterRequest](doc//AdminUsersRegisterRequest.md)
  - [AuthLoginRequest](doc//AuthLoginRequest.md)
- - [AuthRegisterRequest](doc//AuthRegisterRequest.md)
  - [Item](doc//Item.md)
  - [ItemLoan](doc//ItemLoan.md)
  - [ItemsBorrow200Response](doc//ItemsBorrow200Response.md)
- - [PasswordEmail200Response](doc//PasswordEmail200Response.md)
+ - [Locker](doc//Locker.md)
  - [PasswordEmailRequest](doc//PasswordEmailRequest.md)
  - [PasswordStoreRequest](doc//PasswordStoreRequest.md)
  - [TokenResponse](doc//TokenResponse.md)

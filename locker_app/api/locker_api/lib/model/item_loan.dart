@@ -20,15 +20,15 @@ class ItemLoan {
     required this.returnedAt,
   });
 
-  String id;
+  int id;
 
   Item item;
 
-  String userId;
+  int userId;
 
-  String borrowedAt;
+  Object borrowedAt;
 
-  String returnedAt;
+  DateTime? returnedAt;
 
   @override
   bool operator ==(Object other) =>
@@ -47,7 +47,7 @@ class ItemLoan {
       (item.hashCode) +
       (userId.hashCode) +
       (borrowedAt.hashCode) +
-      (returnedAt.hashCode);
+      (returnedAt == null ? 0 : returnedAt!.hashCode);
 
   @override
   String toString() =>
@@ -59,7 +59,11 @@ class ItemLoan {
     json[r'item'] = this.item;
     json[r'user_id'] = this.userId;
     json[r'borrowed_at'] = this.borrowedAt;
-    json[r'returned_at'] = this.returnedAt;
+    if (this.returnedAt != null) {
+      json[r'returned_at'] = this.returnedAt!.toUtc().toIso8601String();
+    } else {
+      json[r'returned_at'] = null;
+    }
     return json;
   }
 
@@ -84,11 +88,11 @@ class ItemLoan {
       }());
 
       return ItemLoan(
-        id: mapValueOfType<String>(json, r'id')!,
+        id: mapValueOfType<int>(json, r'id')!,
         item: Item.fromJson(json[r'item'])!,
-        userId: mapValueOfType<String>(json, r'user_id')!,
-        borrowedAt: mapValueOfType<String>(json, r'borrowed_at')!,
-        returnedAt: mapValueOfType<String>(json, r'returned_at')!,
+        userId: mapValueOfType<int>(json, r'user_id')!,
+        borrowedAt: mapValueOfType<Object>(json, r'borrowed_at')!,
+        returnedAt: mapDateTime(json, r'returned_at', r''),
       );
     }
     return null;

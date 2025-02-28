@@ -11,11 +11,11 @@
 import 'package:locker_api/api.dart';
 import 'package:test/test.dart';
 
-// tests for AuthRegisterRequest
+// tests for AdminUsersRegisterRequest
 void main() {
-  // final instance = AuthRegisterRequest();
+  // final instance = AdminUsersRegisterRequest();
 
-  group('test AuthRegisterRequest', () {
+  group('test AdminUsersRegisterRequest', () {
     // String name
     test('to test the property `name`', () async {
       // TODO
