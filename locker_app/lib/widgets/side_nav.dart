@@ -10,8 +10,12 @@ class SideNav extends StatelessWidget {
     return NavigationRail(
       destinations: const [
         NavigationRailDestination(
-          icon: Icon(Icons.home),
-          label: Text('Home'),
+          icon: Icon(Icons.list),
+          label: Text('Verlauf'),
+        ),
+        NavigationRailDestination(
+          icon: Icon(Icons.unarchive),
+          label: Text('Ausleihen'),
         ),
         NavigationRailDestination(
           icon: Icon(Icons.account_circle),
@@ -22,6 +26,8 @@ class SideNav extends StatelessWidget {
         if (index == 0) {
           context.go('/home');
         } else if (index == 1) {
+          context.go('/items');
+        } else if (index == 2) {
           context.go('/profile');
         }
       },

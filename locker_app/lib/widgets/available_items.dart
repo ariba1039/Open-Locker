@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:locker_app/services/item_service.dart';
 import 'package:locker_app/widgets/item_list.dart';
-import 'package:locker_app/widgets/no_items_borrowed.dart';
+import 'package:locker_app/widgets/no_items_available.dart';
 import 'package:provider/provider.dart';
 
-class BorrowedItems extends StatelessWidget {
-  const BorrowedItems({
+class AvailableItems extends StatelessWidget {
+  const AvailableItems({
     super.key,
   });
 
@@ -16,7 +16,7 @@ class BorrowedItems extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 840),
           child: FutureBuilder(
-            future: itemService.getBorrowedItems(),
+            future: itemService.getItems(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -28,7 +28,7 @@ class BorrowedItems extends StatelessWidget {
               final items = snapshot.data!;
 
               if (items.isEmpty) {
-                return NoItemsBorrowed();
+                return NoItemsAvailable();
               }
 
               return ItemList(items: items);

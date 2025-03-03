@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:locker_app/common/theme.dart';
 import 'package:locker_app/screens/home.dart';
+import 'package:locker_app/screens/items.dart';
 import 'package:locker_app/screens/login.dart';
 import 'package:locker_app/screens/profile.dart';
 import 'package:locker_app/services/item_service.dart';
@@ -23,6 +24,10 @@ GoRouter router() {
       GoRoute(
         path: '/home',
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/items',
+        builder: (context, state) => const ItemsScreen(),
       ),
       GoRoute(
           path: '/profile', builder: (context, state) => const ProfileScreen()),

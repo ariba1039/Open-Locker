@@ -10,8 +10,12 @@ class BottomNav extends StatelessWidget {
     return BottomNavigationBar(
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
+          icon: Icon(Icons.list),
+          label: 'Verlauf',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.unarchive),
+          label: 'Ausleihen',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle),
@@ -22,6 +26,8 @@ class BottomNav extends StatelessWidget {
         if (index == 0) {
           context.go('/home');
         } else if (index == 1) {
+          context.go('/items');
+        } else if (index == 2) {
           context.go('/profile');
         }
       },
