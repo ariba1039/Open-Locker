@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:locker_api/api.dart';
 
 class ItemList extends StatelessWidget {
@@ -15,17 +16,19 @@ class ItemList extends StatelessWidget {
       itemCount: items.length,
       itemBuilder: (context, index) {
         final item = items[index];
-        return Card(
-          child: ListTile(
-            title: Text(item.name),
-            subtitle: Text(item.description),
+        return ListTile(
+          leading: Hero(
+            tag: 'item-${item.id}',
+            child: Image.network(
+                'https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png'),
           ),
+          title: Text(item.name),
+          subtitle: Text(item.description),
+          onTap: () => context.go('/items/${item.id}'),
         );
       },
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 400,
-        childAspectRatio: 1.5,
-      ),
+          maxCrossAxisExtent: 420, childAspectRatio: 2),
     );
   }
 }

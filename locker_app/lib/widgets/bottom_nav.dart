@@ -19,7 +19,7 @@ class BottomNav extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.account_circle),
-          label: 'Profile',
+          label: 'Profil',
         ),
       ],
       onTap: (index) {

@@ -11,30 +11,25 @@ class BorrowedItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer(builder: (context, ItemService itemService, child) {
-      return Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 840),
-          child: FutureBuilder(
-            future: itemService.getBorrowedItems(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                return Center(child: Text('An error occurred'));
-              }
+    return Consumer(builder: (context, ItemService service, child) {
+      return FutureBuilder(
+        future: service.getBorrowedItems(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('An error occurred'));
+          }
 
-              final items = snapshot.data!;
+          final items = snapshot.data!;
 
-              if (items.isEmpty) {
-                return NoItemsBorrowed();
-              }
+          if (items.isEmpty) {
+            return NoItemsBorrowed();
+          }
 
-              return ItemList(items: items);
-            },
-          ),
-        ),
+          return ItemList(items: items);
+        },
       );
     });
   }

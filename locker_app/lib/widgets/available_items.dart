@@ -12,29 +12,26 @@ class AvailableItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ItemService itemService, child) {
-      return Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 840),
-          child: FutureBuilder(
-            future: itemService.getItems(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                return Center(child: Text('An error occurred'));
-              }
+      return FutureBuilder(
+        future: itemService
+            .getItems()
+            .then((items) => items.where((item) => !item.borrowed).toList()),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('An error occurred'));
+          }
 
-              final items = snapshot.data!;
+          final items = snapshot.data!;
 
-              if (items.isEmpty) {
-                return NoItemsAvailable();
-              }
+          if (items.isEmpty) {
+            return NoItemsAvailable();
+          }
 
-              return ItemList(items: items);
-            },
-          ),
-        ),
+          return ItemList(items: items);
+        },
       );
     });
   }

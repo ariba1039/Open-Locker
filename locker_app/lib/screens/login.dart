@@ -12,16 +12,21 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            LoginForm(
-              onSubmit: (String email, String password) =>
-                  _onFormSubmitted(context, email, password),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 840),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                LoginForm(
+                  onSubmit: (String email, String password) =>
+                      _onFormSubmitted(context, email, password),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

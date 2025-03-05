@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
           children: [
             if (useSideNavRail)
               const SideNav(
-                selectedIndex: 1,
+                selectedIndex: 2,
               ),
             Expanded(
               child: Center(child: Text(name)),
@@ -41,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
         bottomNavigationBar: useSideNavRail
             ? null
             : const BottomNav(
-                selectedIndex: 1,
+                selectedIndex: 2,
               ));
   }
 }

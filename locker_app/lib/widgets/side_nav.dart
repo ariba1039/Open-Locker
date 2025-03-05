@@ -19,7 +19,7 @@ class SideNav extends StatelessWidget {
         ),
         NavigationRailDestination(
           icon: Icon(Icons.account_circle),
-          label: Text('Profile'),
+          label: Text('Profil'),
         ),
       ],
       onDestinationSelected: (int index) {
