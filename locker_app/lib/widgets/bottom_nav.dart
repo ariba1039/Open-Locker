@@ -23,6 +23,8 @@ class BottomNav extends StatelessWidget {
         ),
       ],
       onTap: (index) {
+        if (index == selectedIndex) return;
+        
         if (index == 0) {
           context.go('/home');
         } else if (index == 1) {
