@@ -11,21 +11,30 @@ class UserWithToken {
 class UserService {
   User? _user;
   String? _token;
+  bool _initialized = false;
 
-  bool get isAuthenticated => token.isNotEmpty;
+  bool get initialized => _initialized;
+  bool get isAuthenticated => _initialized && token.isNotEmpty;
   String get user => _user?.name ?? '';
   String get token => _token ?? '';
 
-  UserService({UserWithToken? userWithToken}) {
-    if (userWithToken != null) {
-      _user = userWithToken.user;
-      _token = userWithToken.token;
+  UserService() {
+    _loadPersistedToken();
+  }
+
+  Future<void> _loadPersistedToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedToken = prefs.getString('token') ?? '';
+    if (savedToken.isNotEmpty) {
+      await setToken(savedToken);
     }
+    _initialized = true;
   }
 
   Future<void> logout() async {
     _user = null;
     _token = '';
+    await _clearToken();
   }
 
   Future<UserWithToken?> setToken(String token) async {
@@ -34,6 +43,8 @@ class UserService {
     await _loadUser();
 
     if (_user == null) {
+      _token = '';
+      await _clearToken();
       return null;
     }
 
@@ -41,19 +52,23 @@ class UserService {
   }
 
   Future<void> _loadUser() async {
-    final client =
-        ApiClient(authentication: HttpBearerAuth()..accessToken = token);
-    _user = await AuthApi(client).authUser();
+    try {
+      final client =
+          ApiClient(authentication: HttpBearerAuth()..accessToken = token);
+      _user = await AuthApi(client).authUser();
+    } catch (e) {
+      await logout();
+    }
   }
 
-  _persistToken() async {
+  Future<void> _persistToken() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString('token', token);
+    await prefs.setString('token', token);
   }
 
-  _clearToken() async {
+  Future<void> _clearToken() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove('token');
+    await prefs.remove('token');
   }
 
   Future<UserWithToken> login(String email, String password) async {
@@ -71,5 +86,11 @@ class UserService {
     }
 
     return userWithToken;
+  }
+
+  Future<void> waitForInitialization() async {
+    if (!_initialized) {
+      await _loadPersistedToken();
+    }
   }
 }

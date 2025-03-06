@@ -35,6 +35,6 @@ class LoginScreen extends StatelessWidget {
   _onFormSubmitted(BuildContext context, String email, String password) async {
     await Provider.of<UserService>(context, listen: false)
         .login(email, password);
-    context.pushReplacement(HomeScreen.route);
+    context.go(HomeScreen.route);
   }
 }

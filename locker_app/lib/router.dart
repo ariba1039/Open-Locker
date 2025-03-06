@@ -5,6 +5,7 @@ import 'package:locker_app/screens/item_details.dart';
 import 'package:locker_app/screens/items.dart';
 import 'package:locker_app/screens/login.dart';
 import 'package:locker_app/screens/profile.dart';
+import 'package:locker_app/screens/splash.dart';
 import 'package:locker_app/services/user_service.dart';
 import 'package:locker_app/widgets/bottom_nav.dart';
 import 'package:provider/provider.dart';
@@ -43,17 +44,41 @@ class ScaffoldWithNavBar extends StatelessWidget {
 GoRouter router() {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: LoginScreen.route,
+    initialLocation: SplashScreen.route,
     routes: [
       GoRoute(
+        path: SplashScreen.route,
+        builder: (context, state) => const SplashScreen(),
+      ),
+      GoRoute(
         path: LoginScreen.route,
-        builder: (context, state) => const LoginScreen(),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          key: state.pageKey,
+          child: const LoginScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 300),
+        ),
       ),
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
-        builder: (context, state, child) => ScaffoldWithNavBar(
-          child: child,
-          location: state.uri.path,
+        pageBuilder: (context, state, child) => CustomTransitionPage(
+          key: state.pageKey,
+          child: ScaffoldWithNavBar(
+            child: child,
+            location: state.uri.path,
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 300),
         ),
         routes: [
           GoRoute(
@@ -94,9 +119,33 @@ GoRouter router() {
       ),
     ],
     redirect: (context, state) async {
-      final isAuthenticated = context.read<UserService>().isAuthenticated;
-      if (!isAuthenticated) return '/login';
-      return state.matchedLocation;
+      final userService = context.read<UserService>();
+      
+      // Wenn wir auf dem Splash-Screen sind, keine Weiterleitung
+      if (state.matchedLocation == SplashScreen.route) {
+        return null;
+      }
+
+      // Wenn wir bereits auf der Login-Route sind und nicht authentifiziert sind,
+      // bleiben wir dort
+      if (state.matchedLocation == LoginScreen.route && !userService.isAuthenticated) {
+        return null;
+      }
+
+      // Wenn wir nicht authentifiziert sind und nicht auf der Login-Route sind,
+      // gehen wir zum Login
+      if (!userService.isAuthenticated) {
+        return LoginScreen.route;
+      }
+
+      // Wenn wir authentifiziert sind und auf der Login-Route sind,
+      // gehen wir zur Home-Route
+      if (userService.isAuthenticated && state.matchedLocation == LoginScreen.route) {
+        return HomeScreen.route;
+      }
+
+      // In allen anderen Fällen bleiben wir wo wir sind
+      return null;
     },
   );
 }
