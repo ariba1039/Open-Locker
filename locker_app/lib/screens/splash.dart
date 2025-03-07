@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await userService.waitForInitialization();
     // Kleine Verzögerung für eine sanftere Animation
     // await Future.delayed(const Duration(milliseconds: 800));
-    
+
     if (mounted) {
       if (userService.isAuthenticated) {
         context.go(HomeScreen.route);
@@ -57,4 +57,4 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
     );
   }
-} 
+}

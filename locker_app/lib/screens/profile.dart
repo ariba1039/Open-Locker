@@ -11,33 +11,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final useSideNavRail = MediaQuery.sizeOf(context).width >= 600;
     final name = context.watch<UserService>().user;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-        backgroundColor: Theme.of(context).primaryColor,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await context.read<UserService>().logout();
-              context.go(LoginScreen.route);
-            },
-          ),
-        ],
-      ),
-      body: Row(
-        children: [
-          if (useSideNavRail)
-            const SideNav(
-              selectedIndex: 2,
-            ),
-          Expanded(
-            child: Center(child: Text(name)),
-          ),
-        ],
-      ),
-    );
+    return Center(child: Text(name));
   }
 }

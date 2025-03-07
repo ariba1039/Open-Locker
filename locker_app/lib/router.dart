@@ -8,6 +8,7 @@ import 'package:locker_app/screens/profile.dart';
 import 'package:locker_app/screens/splash.dart';
 import 'package:locker_app/services/user_service.dart';
 import 'package:locker_app/widgets/bottom_nav.dart';
+import 'package:locker_app/widgets/side_nav.dart';
 import 'package:provider/provider.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -32,11 +33,31 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final useSideNavRail = MediaQuery.sizeOf(context).width >= 600;
+    final selectedIndex = _calculateSelectedIndex(location);
     return Scaffold(
-      body: child,
-      bottomNavigationBar: BottomNav(
-        selectedIndex: _calculateSelectedIndex(location),
+      appBar: AppBar(
+        title: Text(location),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
+      body: useSideNavRail
+          ? Row(
+              children: [
+                if (useSideNavRail)
+                  SideNav(
+                    selectedIndex: selectedIndex,
+                  ),
+                Expanded(
+                  child: child,
+                ),
+              ],
+            )
+          : child,
+      bottomNavigationBar: useSideNavRail
+          ? null
+          : BottomNav(
+              selectedIndex: selectedIndex,
+            ),
     );
   }
 }
@@ -69,8 +90,8 @@ GoRouter router() {
         pageBuilder: (context, state, child) => CustomTransitionPage(
           key: state.pageKey,
           child: ScaffoldWithNavBar(
-            child: child,
             location: state.uri.path,
+            child: child,
           ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
@@ -94,8 +115,10 @@ GoRouter router() {
                 parentNavigatorKey: _rootNavigatorKey,
                 pageBuilder: (context, state) => CustomTransitionPage(
                   key: state.pageKey,
-                  child: ItemDetailsScreen(itemId: state.pathParameters['id'] ?? ''),
-                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  child: ItemDetailsScreen(
+                      itemId: state.pathParameters['id'] ?? ''),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
                     return SlideTransition(
                       position: animation.drive(
                         Tween(
@@ -120,7 +143,7 @@ GoRouter router() {
     ],
     redirect: (context, state) async {
       final userService = context.read<UserService>();
-      
+
       // Wenn wir auf dem Splash-Screen sind, keine Weiterleitung
       if (state.matchedLocation == SplashScreen.route) {
         return null;
@@ -128,7 +151,8 @@ GoRouter router() {
 
       // Wenn wir bereits auf der Login-Route sind und nicht authentifiziert sind,
       // bleiben wir dort
-      if (state.matchedLocation == LoginScreen.route && !userService.isAuthenticated) {
+      if (state.matchedLocation == LoginScreen.route &&
+          !userService.isAuthenticated) {
         return null;
       }
 
@@ -140,7 +164,8 @@ GoRouter router() {
 
       // Wenn wir authentifiziert sind und auf der Login-Route sind,
       // gehen wir zur Home-Route
-      if (userService.isAuthenticated && state.matchedLocation == LoginScreen.route) {
+      if (userService.isAuthenticated &&
+          state.matchedLocation == LoginScreen.route) {
         return HomeScreen.route;
       }
 
