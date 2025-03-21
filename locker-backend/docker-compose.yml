@@ -24,6 +24,7 @@ services:
         depends_on:
             - mailpit
             - selenium
+            - modbus-simulator
     mailpit:
         image: 'axllent/mailpit:latest'
         ports:
@@ -37,6 +38,18 @@ services:
             - 'host.docker.internal:host-gateway'
         volumes:
             - '/dev/shm:/dev/shm'
+        networks:
+            - sail
+    modbus-simulator:
+        environment:
+            - PYTHONUNBUFFERED=1
+        build:
+            context: './modbus-simulator'
+            dockerfile: Dockerfile
+        ports:
+            - '${FORWARD_MODBUS_PORT:-502}:502'
+        volumes:
+            - './modbus-simulator:/app'
         networks:
             - sail
 networks:
