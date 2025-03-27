@@ -23,8 +23,9 @@ class LockerResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'is_open' => $this->isOpen,
+            'id' => $this->resource->id,
+            'name' => $this->resource->name,
+            'is_open' => false,
         ];
     }
 }

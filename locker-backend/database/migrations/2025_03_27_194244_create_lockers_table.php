@@ -11,21 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('lockers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('description');
-            $table->string('image_path');
-            $table->foreignId('borrower_id')->nullable()->constrained('users');
+            $table->string('modbus_address');
+            $table->string('coil_register');
+            $table->string('status_register')->nullable();
         });
-    }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('items');
+        Schema::table('items', function (Blueprint $table) {
+            $table->foreignId('locker_id')->nullable()->constrained('lockers');
+        });
     }
 };

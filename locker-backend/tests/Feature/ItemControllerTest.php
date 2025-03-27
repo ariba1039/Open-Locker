@@ -48,7 +48,7 @@ class ItemControllerTest extends TestCase
                 'id',
                 'name',
                 'description',
-                'image_path',
+                'image_url',
                 'locker_id',
                 'borrowed_at',
                 'created_at',
@@ -175,7 +175,7 @@ class ItemControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonCount(3)
             ->assertJsonStructure([
-                '*' => ['id', 'name', 'description', 'image_path', 'locker_id', 'borrowed_at'],
+                '*' => ['id', 'name', 'description', 'image_url', 'locker_id', 'borrowed_at'],
             ]);
 
         foreach ($borrowedItems as $item) {
@@ -247,7 +247,7 @@ class ItemControllerTest extends TestCase
                         'id',
                         'name',
                         'description',
-                        'image_path',
+                        'image_url',
                         'locker_id',
                         'borrowed_at',
                         'created_at',

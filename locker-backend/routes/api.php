@@ -56,7 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Locker routes for administrators
         Route::controller(LockerController::class)->prefix('lockers')->name('lockers.')->group(function () {
             Route::get('', 'index')->name('index');
-            Route::post('{lockerId}/open', 'openLocker')->name('open');
+            Route::post('{locker}/open', 'openLocker')->name('open');
         });
     });
 });

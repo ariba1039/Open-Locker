@@ -4,11 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Item;
 use App\Models\ItemLoan;
+use App\Models\Locker;
 use App\Models\User;
-use App\Services\FakeLockerService;
 use Database\Factories\ItemFactory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Arr;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,10 +26,10 @@ class DatabaseSeeder extends Seeder
 
         $admin->makeAdmin();
 
-        $locker_list = (new FakeLockerService)->getLockerList();
+        $locker_list = Locker::factory()->count(5)->create();
 
         ItemFactory::new()->count(count($locker_list))->create([
-            'locker_id' => Arr::random($locker_list)->id,
+            'locker_id' => $locker_list->random()->id,
         ]);
 
         // Erstelle einige Benutzer

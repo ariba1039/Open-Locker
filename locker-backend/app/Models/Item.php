@@ -36,6 +36,17 @@ class Item extends Model
     /**
      * Get the current active loan for this item
      *
+     * @return HasOne<Locker, Item>
+     */
+    public function locker(): HasOne
+    {
+
+        return $this->hasOne(Locker::class, 'id', 'locker_id');
+    }
+
+    /**
+     * Get the current active loan for this item
+     *
      * @return HasOne<ItemLoan, Item>
      */
     public function activeLoan(): HasOne

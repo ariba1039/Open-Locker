@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Locker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,7 @@ class ItemFactory extends Factory
             'name' => ucfirst($this->faker->unique()->word()),
             'description' => fake()->text(),
             'image_path' => fake()->imageUrl(),
-            'locker_id' => fake()->randomLetter().'-'.fake()->numberBetween(1, 9),
+            'locker_id' => Locker::factory()->create()->id,
         ];
     }
 }
