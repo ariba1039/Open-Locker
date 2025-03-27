@@ -18,6 +18,8 @@ dependencies:
   openapi_generator_annotations: ^6.1.0
   build_runner: ^2.4.15
 
+  intl: ^0.20.2
+
   locker_api:
     path: ./api/locker_api
 
