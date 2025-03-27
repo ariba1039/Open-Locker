@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Item;
+use Carbon\CarbonImmutable;
 use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -28,8 +29,8 @@ class ItemResource extends JsonResource
             'description' => $this->resource->description,
             'image_path' => $this->resource->image_path,
             'locker_id' => $this->resource->locker_id,
-            /** @var bool */
-            'borrowed' => $activeLoan !== null,
+            /** @var CarbonImmutable|null */
+            'borrowed_at' => $activeLoan !== null ? $activeLoan->borrowed_at : null,
             'created_at' => $this->resource->created_at,
             'updated_at' => $this->resource->updated_at,
         ];

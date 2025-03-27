@@ -50,7 +50,7 @@ class ItemControllerTest extends TestCase
                 'description',
                 'image_path',
                 'locker_id',
-                'borrowed',
+                'borrowed_at',
                 'created_at',
                 'updated_at',
             ],
@@ -175,13 +175,13 @@ class ItemControllerTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonCount(3)
             ->assertJsonStructure([
-                '*' => ['id', 'name', 'description', 'image_path', 'locker_id', 'borrowed'],
+                '*' => ['id', 'name', 'description', 'image_path', 'locker_id', 'borrowed_at'],
             ]);
 
         foreach ($borrowedItems as $item) {
             $response->assertJsonFragment([
                 'id' => $item->id,
-                'borrowed' => true,
+                'borrowed_at' => $item->activeLoan->borrowed_at->toISOString(),
             ]);
         }
     }
@@ -249,7 +249,7 @@ class ItemControllerTest extends TestCase
                         'description',
                         'image_path',
                         'locker_id',
-                        'borrowed',
+                        'borrowed_at',
                         'created_at',
                         'updated_at',
                     ],
