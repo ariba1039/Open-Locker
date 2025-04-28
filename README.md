@@ -14,7 +14,7 @@ The group came together with the goal to improve their knowledge while building 
 
 ### How you can help
 
-You can join our weeklies on **Tuesdays at 19:30 CET/18:30 UTC** in our [Discord](https://discord.gg/rZ74RYKN3H), either to listen in or to participate, or you can interact with us via github, sending us pull requests, issues or general feedback.
+You can join our weeklies on **Mondays and Tuesdays, alternating every week, at 19:30 CET/18:30 UTC** in our [Discord](https://discord.gg/rZ74RYKN3H), either to listen in or to participate, or you can interact with us via github, sending us pull requests, issues or general feedback. Our next weekly is on Tuesday, the 6th of May, followed by Monday, the 12th of May.
 
 If you're still unsure where to start, you can always reach out to us in our discord's text channels.
 
