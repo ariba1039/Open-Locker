@@ -62,6 +62,9 @@ class _LoginFormState extends State<LoginForm> {
               return null;
             },
           ),
+          SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
             onPressed: _submitForm,
             child: const Text('Login'),

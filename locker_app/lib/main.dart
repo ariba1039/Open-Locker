@@ -15,6 +15,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
+
       providers: [
         Provider(create: (_) => UserService()),
         ProxyProvider<UserService, ItemService>(
@@ -22,6 +23,7 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         title: 'Open Locker',
         theme: appTheme,
         routerConfig: router(),
